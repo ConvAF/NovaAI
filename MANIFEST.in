@@ -1,0 +1,3 @@
+graft chatbot/static
+graft chatbot/templates
+global-exclude *.pyc
