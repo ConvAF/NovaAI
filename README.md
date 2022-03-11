@@ -37,11 +37,21 @@ which is equivalent to running
 pip install -e .
 ```
 
+which installs the application as a package in developer (local edit) mode.
+
 ### Running the application
 
-Start the application using
+Start the application from the root project directory using
 
 ```bash
+flask run
+```
+
+If the application is installed, you can also start
+it from anywhere using
+
+```bash
+export FLASK_APP=chatbot
 flask run
 ```
 
