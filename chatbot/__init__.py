@@ -1,15 +1,16 @@
 import os
+from flask import Flask, render_template
 
-from flask import Flask
+from . import db, auth
 
 def create_app(test_config=None):
-    """ Create the app.
+    """ Create the application.
     """
-    # create and configure the app
+    # create and configure the app instance
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'chatbot.sqlite'),
     )
 
     if test_config is None:
@@ -25,9 +26,16 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # Initialize the database
+    db.init_app(app)    
+
+    # Register blueprints
+    app.register_blueprint(auth.bp)
+
+    # Register routes
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
     return app
+

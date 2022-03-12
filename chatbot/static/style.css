@@ -1,0 +1,11 @@
+html {
+  font-family: sans-serif;
+  background: #fff;
+  padding: 1rem;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+}
