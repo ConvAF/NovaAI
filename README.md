@@ -1,5 +1,7 @@
 # Chatbot
 
+![Coverage badge](https://cdn.rawgit.com/franksh/chatbot/main/tests/coverage-badge.svg)
+
 A language learning Chatbot
 
 ## Overview

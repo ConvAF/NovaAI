@@ -39,4 +39,6 @@ jobs:
           coverage report
           coverage html
       - name: Create coverage badge
-        uses: tj-actions/coverage-badge-py@v1.2
+        run: |
+          pip install coverage-badge
+          coverage-badge -o coverage-badge.svg
