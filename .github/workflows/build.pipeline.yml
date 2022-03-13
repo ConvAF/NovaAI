@@ -46,6 +46,8 @@ jobs:
         id: commit
         run: |
           git add coverage-badge.svg
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           if [-z "$(git status --porcelain)"]; then
             echo "::set-output name=push::false"
           else
@@ -55,6 +57,4 @@ jobs:
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           git push
