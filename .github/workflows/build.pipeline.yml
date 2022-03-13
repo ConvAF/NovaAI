@@ -56,6 +56,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
-        uses: actions/checkout@v3
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git push
