@@ -10,7 +10,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -42,3 +42,19 @@ jobs:
         run: |
           pip install coverage-badge
           coverage-badge -o coverage-badge.svg
+      - name: Commit files
+        id: commit
+        run: |
+          git add coverage-badge.svg
+          git commit -m "update CI status"
+          if [-z "$(git status --porcelain)"]; then
+            echo "::set-output name=push::false"
+          else
+            git commit -m "update CI status" -a
+            echo "::set-output name=push::true"
+          fi
+      - name: Push changes
+          if: steps.commit.outputs.push == 'true'
+          uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}

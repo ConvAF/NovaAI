@@ -1,6 +1,7 @@
 # Chatbot
 
-![Coverage badge](https://cdn.rawgit.com/franksh/chatbot/main/tests/coverage-badge.svg)
+![CI](https://github.com/franksh/chatbot/actions/workflows/build.pipeline.yml/badge.svg)
+![Coverage badge](https://github.com/franksh/chatbot/main/tests/coverage-badge.svg)
 
 A language learning Chatbot
 
