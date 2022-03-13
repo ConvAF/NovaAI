@@ -67,6 +67,26 @@ flask run
 - `flask init-db`: Initialize the database.
 - `flask shell`: Start an interactive Python shell in the application context, with an app instance imported
 
-### Running tests
+### Testing
 
-tbd
+You can run tests using
+
+```bash
+pytest
+```
+
+Add the `-v` flag to show the result for each test function.
+
+To measure the code coverage of the tests, use the `coverage` command:
+
+```bash
+coverage run -m pytest
+```
+
+You can view the coverage report using
+
+```bash
+coverage report
+# or
+coverage html
+```

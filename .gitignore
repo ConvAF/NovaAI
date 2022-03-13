@@ -28,3 +28,7 @@ instance/
 
 # PyCharm
 .idea/
+
+# Tests
+htmlcov/
+.coverage
