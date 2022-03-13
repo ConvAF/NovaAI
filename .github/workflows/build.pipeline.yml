@@ -52,6 +52,8 @@ jobs:
             git commit -m "update CI status" -a
             echo "::set-output name=push::true"
           fi
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         uses: ad-m/github-push-action@master
