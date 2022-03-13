@@ -41,3 +41,26 @@ def client(app):
 def runner(app):
     """ Create a cli runner to call click commands """
     return app.test_cli_runner()
+
+class AuthActions(object):
+    """ Class to perform common auth operations for testing """
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username='test', password='test'):
+        """ Login as a user called 'test' """
+        return self._client.post(
+            '/auth/login',
+            data={'username': username, 'password': password}
+        )
+    
+    def logout(self):
+        """ Logout """
+        return self._client.get('/auth/logout')
+
+# Register the auth actions
+# Can now be called in test
+# Example: auth.login()
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)
