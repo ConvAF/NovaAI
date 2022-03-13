@@ -56,6 +56,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v3
+        run: |
+          git push
