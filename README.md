@@ -41,6 +41,12 @@ which installs the application as a package in developer (local edit) mode.
 
 ### Running the application
 
+Before running the application, initialize the user database
+
+```bash
+flask init-db
+```
+
 Start the application from the root project directory using
 
 ```bash
@@ -54,6 +60,12 @@ it from anywhere using
 export FLASK_APP=chatbot
 flask run
 ```
+
+### Useful commands
+
+- `flask run`: Run the application.
+- `flask init-db`: Initialize the database.
+- `flask shell`: Start an interactive Python shell in the application context, with an app instance imported
 
 ### Running tests
 
