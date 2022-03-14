@@ -5,7 +5,7 @@ with open('requirements.txt','r') as f:
     install_requires = [ s.replace('\n','') for s in f.readlines() ]
 
 setup(name='chatbot',
-      version = '0.0.1',
+      version = '0.0.2',
       license='MIT',
       author='Aloïs Villa, Frank Schlosser',
       description='A language learning chatbot',

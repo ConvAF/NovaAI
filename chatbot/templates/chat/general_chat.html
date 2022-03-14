@@ -1,1 +1,27 @@
 {% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}General Chat{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+  <div class="container overflow-scroll position-relative" style="height: 400px;">
+    
+      <div class="position-relative bottom-0">
+        {% for message in session['chat_history'] %}
+          <div class="mt-auto">
+            <p>{{ message['sender']|title }}: {{ message['message'] }}</p>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+  <form method="post">
+    <dl>
+      {{ form.text_input(autocomplete="off", autofocus="true") }}
+    </dl>
+    <input class="btn btn-primary" type="submit" name="submit_button" value="Send text">
+    <input class="btn btn-outline-secondary" type="submit" name="submit_button" value="Clear chat">
+
+  </form>
+
+{% endblock %}

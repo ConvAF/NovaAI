@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 
 from . import db, auth, chat
 
@@ -28,10 +28,10 @@ def create_app(test_config=None):
 
     # Initialize the database
     db.init_app(app)
-
+    
     # Register blueprints
     app.register_blueprint(auth.bp)
-    # app.register_blueprint(chat.bp)
+    app.register_blueprint(chat.bp)
 
     # Register routes
     @app.route('/')
