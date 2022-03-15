@@ -61,4 +61,5 @@ jobs:
           # Short name for current branch. For PRs, use target branch (base ref)
           GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo running on branch $GIT_BRANCH
+          git pull origin $GIT_BRANCH
           git push origin HEAD:$GIT_BRANCH
