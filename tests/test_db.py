@@ -7,10 +7,10 @@ def test_get_close_db(app):
     """ Test getting and closing the db """
     with app.app_context():
         db = get_db()
-        # Test that same connection is returned every time
+        # Same connection is returned every time
         assert db is get_db()
 
-    # Test that connection can be queried and closes successfuly
+    # Connection can be queried and closes successfuly
     with pytest.raises(sqlite3.ProgrammingError) as e:
         db.execute('SELECT 1')
     assert 'closed' in str(e.value)
@@ -24,7 +24,7 @@ def test_init_db_command(runner, monkeypatch):
     def fake_init_db():
         Recorder.called = True
 
-    # Invoke the init-db command
+    # The init-db command can be invoked
     monkeypatch.setattr('chatbot.db.init_db', fake_init_db)
     result = runner.invoke(args=['init-db'])
     assert 'Initialized the database.' in result.output
@@ -36,10 +36,10 @@ def test_user_schema(app):
     with app.app_context():
         db = get_db()
     
-        # Test querying data
+        # There exist users in the database
         row = db.execute("select * from user").fetchone()
         
-        # Test returned data
+        # Database has correct columns
         cols = ['username', 'password']
         for col in cols:
             assert(col in row.keys())

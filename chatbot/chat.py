@@ -64,7 +64,8 @@ def get_bot_response(chat_history):
 
 def clear_chat_history():
     """ Clear the chat history """
-    session.pop('chat_history')
+    if session.get('chat_history'):
+        session.pop('chat_history')
 
 class ChatForm(Form):
     text_input = StringField('Input', [validators.Length(min=4, max=300)])
