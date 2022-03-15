@@ -38,12 +38,22 @@ jobs:
           coverage run -m pytest
           coverage report
           coverage html
+      - name: Get branch
+        id: branch-info
+        run: |
+          # Get branch name
+          # Short name for current branch. For PRs, use target branch (base ref)
+          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo running on branch $GIT_BRANCH
+          echo "::set-output name=GIT_BRANCH::$GIT_BRANCH"
       - name: Create coverage badge
+        if: steps.branch-info.outputs.GIT_BRANCH == 'main'
         run: |
           pip install coverage-badge
           coverage-badge -fo tests/coverage-badge.svg
       - name: Commit files
         id: commit
+        if: steps.branch-info.outputs.GIT_BRANCH == 'main'
         run: |
           git add tests/coverage-badge.svg
           git config user.name github-actions
@@ -55,11 +65,10 @@ jobs:
             echo "::set-output name=push::true"
           fi
       - name: Push changes
-        if: steps.commit.outputs.push == 'true'
+        if: steps.branch-info.outputs.GIT_BRANCH == 'main' && steps.commit.outputs.push == 'true'
         run: |
           # Get branch name
           # Short name for current branch. For PRs, use target branch (base ref)
-          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          echo running on branch $GIT_BRANCH
-          git pull origin $GIT_BRANCH
-          git push origin HEAD:$GIT_BRANCH
+          # GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          # git push origin HEAD:$GIT_BRANCH
+          git push
