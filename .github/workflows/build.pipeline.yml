@@ -54,8 +54,9 @@ jobs:
             git commit -m "update CI status" -a
             echo "::set-output name=push::true"
           fi
+      - name: Check Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         run: |
-          export branch_name=${GITHUB_REF##*/}
-          git push origin HEAD:$branch_name
+          git push origin HEAD:${GITHUB_REF##*/}
