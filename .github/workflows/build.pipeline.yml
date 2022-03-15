@@ -57,4 +57,5 @@ jobs:
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         run: |
-          git push
+          export branch_name=${GITHUB_REF##*/}
+          git push origin HEAD:$branch_name
