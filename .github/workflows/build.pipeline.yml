@@ -55,8 +55,11 @@ jobs:
             echo "::set-output name=push::true"
           fi
       - name: Check Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
+        run: |
+          # Short name for current branch. For PRs, use target branch (base ref)
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo running on branch $GIT_BRANCH
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         run: |
-          git push origin HEAD:${GITHUB_REF##*/}
+          git push origin HEAD:$GIT_BRANCH
