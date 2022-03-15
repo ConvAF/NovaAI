@@ -24,6 +24,7 @@ It is recommended to also set up and activate a
 virtual environment, for example using
 
 ```bash
+pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 ```
@@ -70,7 +71,9 @@ flask run
 - `flask init-db`: Initialize the database.
 - `flask shell`: Start an interactive Python shell in the application context, with an app instance imported
 
-### Testing
+## Testing
+
+### Running Unit Tests
 
 You can run tests using
 
@@ -92,4 +95,26 @@ You can view the coverage report using
 coverage report
 # or
 coverage html
+```
+
+### Testing in the Flask shell
+
+The flask application can also be tested from the shell.
+
+Start the shell with
+
+```bash
+flask shell
+```
+
+In the shell, you can test endpoints like so:
+
+```python
+>>> client = app.test_client()
+>>> client.get('/')
+<WrapperTestResponse streamed [200 OK]>
+>>> client.post(
+      '/auth/register',
+      data={'username': username, 'password': password}
+    )
 ```

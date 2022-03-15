@@ -4,13 +4,15 @@ from chatbot.db import get_db
 
 def test_register(client, app):
     """ Test whether registration works """
-    # Test GET method for view
+    # Test GET
+    # View is returned
     assert client.get('/auth/register').status_code == 200
-    # Test POST method
+    # Test POST
+    # Registration succeeds
     response = client.post(
         '/auth/register', data={'username': 'a', 'password': 'a'}
     )
-    # Test redirect to login url
+    # Successful registration redirects to login
     assert 'http://localhost/auth/login' == response.headers['Location']
     # Test user has been added to database
     with app.app_context():
@@ -37,14 +39,16 @@ def test_register_validate_input(client, username, password, message):
 
 def test_login(client, auth):
     """ Test whether login works """
-    # Test GET method for view
+    # GET
+    # View is returned
     assert client.get('/auth/login').status_code == 200
-    # Test POST method
+    # POST
+    # Login succeeds
     response = auth.login()
-    # Test redirect for root
+    # Login redirects the user to root
     assert response.headers['Location'] == 'http://localhost/'
 
-    # Check that user is logged in in sessino
+    # After login, user is logged in in session
     with client:
         client.get('/')
         assert session['user_id'] == 1
@@ -69,5 +73,20 @@ def test_logout(client, auth):
 
     with client:
         auth.logout()
-        # Client should not be in session after logout
+        # User is logged out after logout
         assert 'user_id' not in session
+
+def test_login_required(client, auth):
+    """ Test that login is required for protected views """
+    # Test redirect to login url
+    with client:
+        response = client.get('/chat/general')
+        assert response.status_code == 302 # Redirect has occured
+        assert 'http://localhost/auth/login' == response.headers['Location']
+    
+    # Now logged in
+    auth.login()
+    with client:
+        response = client.get('/chat/general')
+        assert response.status_code == 200 # No redirect
+

@@ -1,7 +1,7 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 
-from . import db, auth
+from . import db, auth, chat
 
 def create_app(test_config=None):
     """ Create the application.
@@ -27,19 +27,16 @@ def create_app(test_config=None):
         pass
 
     # Initialize the database
-    db.init_app(app)    
-
+    db.init_app(app)
+    
     # Register blueprints
     app.register_blueprint(auth.bp)
+    app.register_blueprint(chat.bp)
 
     # Register routes
     @app.route('/')
     def index():
         return render_template('index.html')
-
-    @app.route('/hello')
-    def hello():
-        return "Hello, world!"
 
     return app
 
