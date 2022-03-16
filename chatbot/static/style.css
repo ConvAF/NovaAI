@@ -9,3 +9,7 @@ body {
   margin: 0 auto;
   background: white;
 }
+
+.chat_text_input_field {
+  width: 600px;
+}

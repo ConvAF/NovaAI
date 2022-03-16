@@ -1,7 +1,7 @@
 """
 Chat views.
 """
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, current_app
 from wtforms import Form, StringField, validators
 
 from chatbot.auth import login_required
@@ -32,16 +32,16 @@ def general():
             chat_history.append(
                 {
                     'sender': 'user',
-                    'message': form.text_input.data
+                    'text': form.text_input.data
                 }
             )
 
+            # Clear form
+            form.text_input.data = ""
             # Get response from bot
             chat_history = get_bot_response(chat_history)
             # Update chat history
             session['chat_history'] = chat_history
-            # Clear form
-            form.text_input.data = ""
         
     return render_template('chat/general_chat.html', form=form)
 
@@ -54,12 +54,13 @@ def get_bot_response(chat_history):
     # response = model.predict(chat_history)
     # chat_history_new = chat_history.append(response)
     # Dummy response for now
-    chat_history.append(
-        {
-            'sender': 'bot',
-            'message': 'This is an automated dummy reply.'
-        }
-    )
+    # chat_history.append(
+    #     {
+    #         'sender': 'bot',
+    #         'text': 'This is an automated dummy reply.'
+    #     }
+    # )
+    chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
     return chat_history
 
 def clear_chat_history():
@@ -68,4 +69,7 @@ def clear_chat_history():
         session.pop('chat_history')
 
 class ChatForm(Form):
-    text_input = StringField('Input', [validators.Length(min=4, max=300)])
+    text_input = StringField('Input',
+                            [validators.Length(min=4, max=300)],
+                            render_kw={'class': 'chat_text_input_field'}
+                            )

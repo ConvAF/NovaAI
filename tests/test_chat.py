@@ -1,8 +1,8 @@
 import pytest
-from flask import g, session
+from flask import session
 from chatbot.db import get_db
 
-def test_chat(client, app, auth):
+def test_chat(client, auth):
     """ Test whether general chat functionality works works """
     
     # Test GET
@@ -25,7 +25,7 @@ def test_chat(client, app, auth):
         # Chat history has been initialized
 
 
-def test_chat_send_message(client, app, auth):
+def test_chat_send_message(client, auth):
     """ Test the chat functionality """
     auth.login()
     response = client.post(
@@ -80,19 +80,3 @@ def test_clear_chat_history(client, auth):
                 'submit_button': 'Clear chat'
                 }
         )
-
-
-
-    # # Test GET method for view
-    # assert client.get('/auth/register').status_code == 200
-    # # Test POST method
-    # response = client.post(
-    #     '/auth/register', data={'username': 'a', 'password': 'a'}
-    # )
-    # # Test redirect to login url
-    # assert 'http://localhost/auth/login' == response.headers['Location']
-    # # Test user has been added to database
-    # with app.app_context():
-    #     assert get_db().execute(
-    #         "SELECT * FROM user WHERE username = 'a'",
-    #     ).fetchone() is not None

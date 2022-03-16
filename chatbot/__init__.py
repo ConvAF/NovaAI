@@ -3,6 +3,8 @@ from flask import Flask, render_template, session
 
 from . import db, auth, chat
 
+from .language_model import LanguageModel
+
 def create_app(test_config=None):
     """ Create the application.
     """
@@ -11,6 +13,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'chatbot.sqlite'),
+        LOAD_LANGUAGE_MODEL=True
     )
 
     if test_config is None:
@@ -37,6 +40,11 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    # app.config['LOAD_LANGUAGE_MODEL'] = False
+
+    if app.config['LOAD_LANGUAGE_MODEL']:
+        app.language_model = LanguageModel()
 
     return app
 
