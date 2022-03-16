@@ -18,9 +18,10 @@ def app():
 
     # Create app in test mode
     # and set test file as database
-    app = create_app({
+    app = create_app(test_config={
         'TESTING': True,
         'DATABASE': db_path,
+        'LOAD_LANGUAGE_MODEL': True
     })
 
     with app.app_context():
@@ -32,6 +33,7 @@ def app():
     os.close(db_fd)
     os.unlink(db_path)
 
+
 @pytest.fixture
 def client(app):
     """ Create client for tests """
@@ -41,6 +43,7 @@ def client(app):
 def runner(app):
     """ Create a cli runner to call click commands """
     return app.test_cli_runner()
+
 
 class AuthActions(object):
     """ Class to perform common auth operations for testing """

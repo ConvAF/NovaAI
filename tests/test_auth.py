@@ -1,6 +1,7 @@
 import pytest
 from flask import g, session
 from chatbot.db import get_db
+from tests.conftest import app
 
 def test_register(client, app):
     """ Test whether registration works """
