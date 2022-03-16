@@ -3,6 +3,8 @@ from flask import Flask, render_template, session
 
 from . import db, auth, chat
 
+from .language_model import LanguageModel
+
 def create_app(test_config=None):
     """ Create the application.
     """
@@ -37,6 +39,8 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    app.language_model = LanguageModel()
 
     return app
 
