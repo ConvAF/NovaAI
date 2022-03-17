@@ -120,3 +120,30 @@ In the shell, you can test endpoints like so:
       data={'username': username, 'password': password}
     )
 ```
+
+### Load testing with locust
+
+To test the application under user traffic, do
+
+```bash
+cd tests/
+locust
+```
+
+which will open a dashboard at `http://0.0.0.0:8089/`. There you can simulate users retrieving different endpoints. More complex fuctionality can be added in `tests/locustfile.py`.
+
+### Profiling with py-spy
+
+To profile the app, first get the process id (`pid`) of the running flask app, for example using
+
+```bash
+ps | grep flask
+```
+
+Then you can record the app's activity using
+
+```bash
+py-spy record -o profile.svg --pid <pid>
+```
+
+You can interact with the app for a while (or run a `locust` load test), after a while stop the `py-spy` process, which will save a flame graph of the apps activity.
