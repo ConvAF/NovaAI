@@ -13,6 +13,8 @@ tbd
 
 ### Installation
 
+The package uses `python3.9`.
+
 First clone the repo:
 
 ```bash

@@ -1,6 +1,5 @@
 import pytest
 from flask import session
-from chatbot.db import get_db
 
 def test_chat(client, auth):
     """ Test whether general chat functionality works works """
