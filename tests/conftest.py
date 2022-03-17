@@ -21,12 +21,14 @@ def app():
     app = create_app(test_config={
         'TESTING': True,
         'DATABASE': db_path,
-        'LOAD_LANGUAGE_MODEL': True
+        'LOAD_LANGUAGE_MODEL': False
     })
 
     with app.app_context():
         init_db()
         get_db().executescript(_data_sql)
+
+    # del(app.language_model)
 
     yield app
 

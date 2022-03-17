@@ -1,9 +1,13 @@
 import pytest
 from flask import session
+from chatbot.language_model import LanguageModel
 
-def test_chat(client, auth):
+def test_chat_general(client, auth, app):
     """ Test whether general chat functionality works works """
     
+    # Load language model (not loaded in test app by default)
+    app.language_model = LanguageModel()
+
     # Test GET
     # Not logged in request redirects to login
     response = client.get('/chat/general')
@@ -24,8 +28,12 @@ def test_chat(client, auth):
         # Chat history has been initialized
 
 
-def test_chat_send_message(client, auth):
+def test_chat_send_message(client, auth, app):
     """ Test the chat functionality """
+
+    # Load language model (not loaded in test app by default)
+    app.language_model = LanguageModel()
+
     auth.login()
     response = client.post(
         '/chat/general',
@@ -46,8 +54,12 @@ def test_chat_send_message(client, auth):
     )
 
 
-def test_clear_chat_history(client, auth):
+def test_clear_chat_history(client, auth, app):
     """ Test the clear chat functionality """
+
+    # Load language model (not loaded in test app by default)
+    app.language_model = LanguageModel()
+
     # Test that chat gets cleared on call
     with client:
         auth.login()

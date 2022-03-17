@@ -1,10 +1,14 @@
 import pytest
 from flask import session
 from chatbot.db import get_db
+from chatbot.language_model import LanguageModel
 
 
 def test_language_model_response(app):
     """ Test the responses of the language model """
+    # Load language model (not loaded in test app by default)
+    app.language_model = LanguageModel()
+
     # Language model is loaded
     assert app.language_model
 

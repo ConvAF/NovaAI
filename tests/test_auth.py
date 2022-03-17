@@ -2,6 +2,7 @@ import pytest
 from flask import g, session
 from chatbot.db import get_db
 
+
 def test_register(client, app):
     """ Test whether registration works """
     # Test GET
@@ -19,6 +20,7 @@ def test_register(client, app):
         assert get_db().execute(
             "SELECT * FROM user WHERE username = 'a'",
         ).fetchone() is not None
+    # app.teardown_appcontext()
 
 @pytest.mark.parametrize(
     ('username', 'password', 'message'), (
@@ -35,7 +37,6 @@ def test_register_validate_input(client, username, password, message):
     )
     # Note: response data is in bytes
     assert message in response.data
-
 
 def test_login(client, auth):
     """ Test whether login works """
