@@ -6,6 +6,7 @@ coverage~=6.3.2
 numpy~=1.22.3
 pandas~=1.4.1
 transformers~=4.17.0
+torch~=1.11.0
 ipykernel~=6.9.2
 py-spy~=0.3.11
 locust~=2.8.4
