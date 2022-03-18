@@ -10,7 +10,7 @@
       <div class="position-relative bottom-0">
         {% for message in session['chat_history'] %}
           <div class="mt-auto">
-            <p>{{ message['sender']|title }}: {{ message['message'] }}</p>
+            <p>{{ message['sender']|title }}: {{ message['text'] }}</p>
           </div>
         {% endfor %}
       </div>

@@ -53,7 +53,7 @@ jobs:
           coverage-badge -fo tests/coverage-badge.svg
       - name: Commit files
         id: commit
-        if: steps.branch-info.outputs.GIT_BRANCH == 'main'
+        if: steps.branch-info.outputs.GIT_BRANCH == 'main' && steps.commit.outputs.push == 'true'
         run: |
           git add tests/coverage-badge.svg
           git config user.name github-actions

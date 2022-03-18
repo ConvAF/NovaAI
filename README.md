@@ -13,6 +13,8 @@ tbd
 
 ### Installation
 
+The package uses `python3.9`.
+
 First clone the repo:
 
 ```bash
@@ -117,4 +119,63 @@ In the shell, you can test endpoints like so:
       '/auth/register',
       data={'username': username, 'password': password}
     )
+```
+
+### Load testing with locust
+
+To test the application under user traffic, do
+
+```bash
+cd tests/
+locust
+```
+
+which will open a dashboard at `http://0.0.0.0:8089/`. There you can simulate users retrieving different endpoints. More complex fuctionality can be added in `tests/locustfile.py`.
+
+### Profiling with py-spy
+
+To profile the app, first get the process id (`pid`) of the running flask app, for example using
+
+```bash
+ps | grep flask
+```
+
+Then you can record the app's activity using
+
+```bash
+py-spy record -o profile.svg --pid <pid>
+```
+
+You can interact with the app for a while (or run a `locust` load test), after a while stop the `py-spy` process, which will save a flame graph of the apps activity.
+
+## Deployment
+
+### Deploying on AWS EC2
+
+#### Installing pytorch
+
+We encountered a bug when installing `pytorch` on an AWS EC2 instance, where the installation with `pip` did not finish. To circumvent this, use
+
+```bash
+pip install --no-cache-dir torch
+```
+
+or, for all requirements,
+
+```bash
+pip install -r requirements.txt --no-cache-dir
+```
+
+#### Serving the app
+
+```bash
+waitress-serve --call 'chatbot:create_app'
+```
+
+#### Ports on AWS EC2
+
+waitress serves the app on port 8080. To redirect to port 80, use
+
+```bash
+sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
 ```
