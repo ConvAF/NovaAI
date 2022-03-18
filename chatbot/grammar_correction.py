@@ -9,15 +9,6 @@ class GrammarModel(Gramformer):
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gf = super().__init__(models=1, use_gpu=False)
-        self.seed = seed
-        set_seed(self.seed)
-
-
-    def set_seed(self, seed):
-        torch.manual_seed(seed)
-        if torch.cuda.is_available():
-            torch.cuda.manual_seed_all(seed)
-
 
     def grammar_correction(self, user_input):
         """
