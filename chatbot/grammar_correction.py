@@ -1,9 +1,11 @@
 from gramformer import Gramformer
 import torch
 import spacy
+import random
 
 class GrammarModel(Gramformer):
     """
+    Grammar correction model.
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gf = super().__init__(models=1, use_gpu=False)
@@ -35,7 +37,7 @@ class GrammarModel(Gramformer):
     def add_correction_to_chat_history(self, chat_history):
         """
         Append the message to the user to the chat history.
-        Return the corrected sentence ( to be used as input )
+        Return the corrected sentence.
         """
         pass
 
