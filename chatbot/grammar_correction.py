@@ -24,8 +24,8 @@ class GrammarModel(Gramformer):
         ]
 
         if corrected_sentence != last_user_input:
-            correction_message = random.choice(message_styles) + corrected_sentence
-
+            #correction_message = random.choice(message_styles) + corrected_sentence
+            correction_message = f"{random.choice(message_styles)} \"{corrected_sentence}\" "
         return corrected_sentence, correction_message
 
 
