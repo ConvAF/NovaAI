@@ -163,7 +163,7 @@ pip install --no-cache-dir torch
 or, for all requirements,
 
 ```bash
-pip install -r requirements.txt --no-cache-dir
+pip install -e . --no-cache-dir
 ```
 
 #### Serving the app
@@ -178,4 +178,36 @@ waitress serves the app on port 8080. To redirect to port 80, use
 
 ```bash
 sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+```
+
+#### Other
+
+Install `git lfs`
+
+```bash
+sudo apt install git-lfs
+```
+
+### Docker
+
+Docker image is specified in the docker file.
+
+Build the image using
+
+```bash
+docker build . -tag chatbot
+```
+
+Start the container using
+
+```bash
+docker run -p 80:80 --rm chatbot:latest
+```
+
+(on mac you have to specify the ports `8080:80 ` because `80` is already in use).
+
+or in interactive mode to inspect the contents:
+
+```bash
+docker run -it --rm chatbot:latest bash
 ```
