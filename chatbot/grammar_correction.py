@@ -11,8 +11,10 @@ class GrammarModel(Gramformer):
         self.gm = super().__init__(models=1, use_gpu=False)
         self.last_user_input = None
 
+
     def set_last_user_input(self, chat_history):
         self.last_user_input = chat_history[-1].get('text')
+
 
     def grammar_correction(self):
         """
@@ -33,8 +35,8 @@ class GrammarModel(Gramformer):
         Append the message to the user to the chat history.
         Return the corrected sentence.
         """
-        corrected_sentence, correction_message = self.grammar_correction(chat_history)
-        error_types = self.get_edits(chat_history, corrected_sentence)
+        corrected_sentence, correction_message = self.grammar_correction()
+        error_types = self.get_edits(corrected_sentence)
 
         if correction_message:
             chat_history.append(
