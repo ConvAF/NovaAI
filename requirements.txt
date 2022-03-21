@@ -3,9 +3,12 @@ flask-wtf~=1.0.0
 python-dotenv~=0.19.2
 pytest~=7.0.1
 coverage~=6.3.2
+git+https://github.com/PrithivirajDamodaran/Gramformer.git
+spacy~=2.3.7
 numpy~=1.22.3
 pandas~=1.4.1
 torch~=1.11.0
+ipykernel~=6.9.2
 ipykernel~=6.9.2
 py-spy~=0.3.11
 locust~=2.8.4
