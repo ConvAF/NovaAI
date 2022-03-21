@@ -4,7 +4,7 @@ python-dotenv~=0.19.2
 pytest~=7.0.1
 coverage~=6.3.2
 git+https://github.com/PrithivirajDamodaran/Gramformer.git
-spacy~<3
+spacy~=2.3.7
 numpy~=1.22.3
 pandas~=1.4.1
 transformers~=4.17.0
