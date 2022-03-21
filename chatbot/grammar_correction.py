@@ -15,11 +15,7 @@ class GrammarModel(Gramformer):
         """
         Generate a corrected sentence and a message to the user with the correction.
         """
-        print(chat_history)
         last_user_input = chat_history[-1].get('text')
-        #print (last_gen)
-        #last_user_input = last_gen.get('text')
-        #print(last_user_input)
         corrected_sentence = self.correct(last_user_input, max_candidates=1)
         corrected_sentence = list(corrected_sentence)[0]
 
