@@ -9,7 +9,6 @@ class GrammarModel(Gramformer):
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gm = super().__init__(models=1, use_gpu=False)
-        print("######## INIT GrammerModel")
 
     def grammar_correction(self, chat_history):
         """
