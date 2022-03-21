@@ -60,7 +60,9 @@ def get_bot_response(chat_history):
     #         'text': 'This is an automated dummy reply.'
     #     }
     # )
+    chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
     chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
+
     return chat_history
 
 def clear_chat_history():
