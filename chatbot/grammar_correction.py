@@ -8,17 +8,18 @@ class GrammarModel(Gramformer):
     Grammar correction model.
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
-        self.gf = super().__init__(models=1, use_gpu=False)
+        self.gm = super().__init__(models=1, use_gpu=False)
 
-    def grammar_correction(self, user_input):
+
+    def grammar_correction(self, chat_history):
         """
         Generate a corrected sentence and a message to the user with the correction.
         """
 
-        corrected_sentence = self.correct(user_input, max_candidates=1)
+        corrected_sentence = self.correct(chat_history, max_candidates=1)
         corrected_sentence = list(corrected_sentence)[0]
 
-        if corrected_sentence != user_input:
+        if corrected_sentence != chat_history:
             correction_message = f"[Correction] {corrected_sentence}"
             print(correction_message)
 
@@ -30,12 +31,22 @@ class GrammarModel(Gramformer):
         Append the message to the user to the chat history.
         Return the corrected sentence.
         """
-        pass
+        corrected_sentence, correction_message = self.gm.grammar_correction(chat_history)
+        error_types = self.gm.get_edits(chat_history, corrected_sentence)
 
-    def _get_edits(self, user_input, corrected_sentence):
-        user_input = self.annotator.parse(user_input)
+         chat_history.append(
+            {
+                'sender': 'bot',
+                'text': correction_message
+            }
+        )
+        return chat_history       
+
+
+    def _get_edits(self, chat_history, corrected_sentence):
+        chat_history = self.annotator.parse(chat_history)
         corrected_sentence = self.annotator.parse(corrected_sentence)
-        alignment = self.annotator.align(user_input, corrected_sentence)
+        alignment = self.annotator.align(chat_history, corrected_sentence)
         edits = self.annotator.merge(alignment)
 
         if len(edits) == 0:  
