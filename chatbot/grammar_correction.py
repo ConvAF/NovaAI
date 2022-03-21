@@ -17,9 +17,14 @@ class GrammarModel(Gramformer):
         """
         corrected_sentence = self.correct(last_user_input, max_candidates=1)
         corrected_sentence = list(corrected_sentence)[0]
+        message_styles = [
+            "I think you meant: ",
+            "Oh, you mean: ",
+            "This would be better said like this: "
+        ]
 
         if corrected_sentence != last_user_input:
-            correction_message = f"[Correction] {corrected_sentence}"
+            correction_message = random.choice(message_styles) + corrected_sentence
             print(correction_message)
 
         return corrected_sentence, correction_message
