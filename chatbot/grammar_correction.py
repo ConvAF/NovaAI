@@ -34,12 +34,13 @@ class GrammarModel(Gramformer):
         corrected_sentence, correction_message = self.gm.grammar_correction(chat_history)
         error_types = self.gm.get_edits(chat_history, corrected_sentence)
 
-         chat_history.append(
-            {
-                'sender': 'bot',
-                'text': correction_message
-            }
-        )
+        if correction_message:
+            chat_history.append(
+                {
+                    'sender': 'bot',
+                    'text': correction_message
+                }
+            )
         return chat_history       
 
 
