@@ -9,14 +9,18 @@ class GrammarModel(Gramformer):
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gm = super().__init__(models=1, use_gpu=False)
-
+        print("######## INIT GrammerModel")
 
     def grammar_correction(self, chat_history):
         """
         Generate a corrected sentence and a message to the user with the correction.
         """
-
-        corrected_sentence = self.correct(chat_history, max_candidates=1)
+        print(chat_history)
+        last_user_input = chat_history[-1].get('text')
+        #print (last_gen)
+        #last_user_input = last_gen.get('text')
+        #print(last_user_input)
+        corrected_sentence = self.correct(last_user_input, max_candidates=1)
         corrected_sentence = list(corrected_sentence)[0]
 
         if corrected_sentence != chat_history:
@@ -31,8 +35,8 @@ class GrammarModel(Gramformer):
         Append the message to the user to the chat history.
         Return the corrected sentence.
         """
-        corrected_sentence, correction_message = self.gm.grammar_correction(chat_history)
-        error_types = self.gm.get_edits(chat_history, corrected_sentence)
+        corrected_sentence, correction_message = self.grammar_correction(chat_history)
+        error_types = self.get_edits(chat_history, corrected_sentence)
 
         if correction_message:
             chat_history.append(
