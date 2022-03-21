@@ -195,7 +195,7 @@ Docker image is specified in the docker file.
 Build the image using
 
 ```bash
-docker build . -tag chatbot
+docker build . --tag chatbot
 ```
 
 Start the container using
