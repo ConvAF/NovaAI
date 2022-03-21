@@ -3,6 +3,12 @@ from setuptools import setup, find_packages
 # Parse dependencies
 with open('requirements.txt','r') as f:
     install_requires = [ s.replace('\n','') for s in f.readlines() ]
+    # Fix syntax for packages that are directly install from GitHub
+    for i, req in enumerate(install_requires):
+        if req[0:3] == 'git':
+            package_name = req.split('/')[-1].split('.')[0].lower()
+            # Replace command
+            install_requires[i] = f"{package_name} @ {req}"
 
 setup(name='chatbot',
       version = '0.0.2',

@@ -152,6 +152,31 @@ You can interact with the app for a while (or run a `locust` load test), after a
 
 ### Deploying on AWS EC2
 
+This describes how to deploy the app using docker.
+
+First clone the repo:
+
+```bash
+git clone git@github.com:franksh/chatbot.git
+cd chatbot
+```
+
+Then build the image using
+
+```bash
+docker build . --tag chatbot
+```
+
+To run the app (and keep running in background), start the container as
+
+```bash
+docker run -dp 80:80 chatbot:latest
+```
+
+### Manual deployment on AWS EC2
+
+The following outlines some steps if not using `docker` as described above
+
 #### Installing pytorch
 
 We encountered a bug when installing `pytorch` on an AWS EC2 instance, where the installation with `pip` did not finish. To circumvent this, use
@@ -198,13 +223,19 @@ Build the image using
 docker build . --tag chatbot
 ```
 
-Start the container using
+Start the container (and keep running in background)
+
+```bash
+docker run -dp 80:80 chatbot:latest
+```
+
+For testing, run the container and delete after user with
 
 ```bash
 docker run -p 80:80 --rm chatbot:latest
 ```
 
-(on mac you have to specify the ports `8080:80 ` because `80` is already in use).
+(ports are not necessary on the server, but on mac you have to specify the ports `8080:80 ` because `80` is already in use).
 
 or in interactive mode to inspect the contents:
 
