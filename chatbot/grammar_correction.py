@@ -45,6 +45,9 @@ class GrammarModel(Gramformer):
 
 
     def _get_edits(self, chat_history, corrected_sentence):
+        """
+        Return the type of the error.
+        """
         chat_history = self.annotator.parse(chat_history)
         corrected_sentence = self.annotator.parse(corrected_sentence)
         alignment = self.annotator.align(chat_history, corrected_sentence)
