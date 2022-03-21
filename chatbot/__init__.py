@@ -4,6 +4,7 @@ from flask import Flask, render_template, session
 from . import db, auth, chat
 
 from .language_model import LanguageModel
+from .grammar_correction import GrammarModel
 
 def create_app(test_config=None):
     """ Create the application.
@@ -45,6 +46,7 @@ def create_app(test_config=None):
 
     if app.config['LOAD_LANGUAGE_MODEL']:
         app.language_model = LanguageModel()
+        app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
     return app
 
