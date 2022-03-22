@@ -6,6 +6,8 @@ ADD chatbot/ ./chatbot
 
 RUN pip install -e . --no-cache-dir
 
+RUN python -m spacy download en
+
 ENV FLASK_APP=chatbot
 
 RUN ["flask", "init-db"]
