@@ -1,5 +1,6 @@
+from itsdangerous import NoneAlgorithm
 import torch
-from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
+# from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
 
 
 
@@ -11,9 +12,10 @@ class LanguageModel():
         model_name = "facebook/blenderbot-400M-distill"
         # model_name = "facebook/blenderbot-3B"
 
-        self.tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
-        self.model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
-
+        # self.tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
+        # self.model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
+        self.tokenizer = None
+        self.model = None
 
     def add_response_to_chat_history(self, chat_history):
         """ Generate a response from the bot and append to chat history.
@@ -24,10 +26,11 @@ class LanguageModel():
         if chat_history is None or len(chat_history)==0:
             return chat_history
         
-        chat_history_ids = self.chat_history_to_ids(chat_history)
+        # chat_history_ids = self.chat_history_to_ids(chat_history)
 
-        reply_id = self.model.generate(chat_history_ids, max_length=1250)
-        reply_text = self.tokenizer.decode(reply_id[0], skip_special_tokens=True).lstrip()
+        # reply_id = self.model.generate(chat_history_ids, max_length=1250)
+        # reply_text = self.tokenizer.decode(reply_id[0], skip_special_tokens=True).lstrip()
+        reply_text = "This is a dummy reply."
 
         chat_history.append(
             {

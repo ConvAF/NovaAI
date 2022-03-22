@@ -10,7 +10,6 @@ with open('requirements.txt','r') as f:
             # Replace command
             install_requires[i] = f"{package_name} @ {req}"
 
-
 setup(name='chatbot',
       version = '0.0.2',
       license='MIT',
