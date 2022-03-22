@@ -4,8 +4,11 @@ python-dotenv~=0.19.2
 pytest~=7.0.1
 coverage~=6.3.2
 git+https://github.com/PrithivirajDamodaran/Gramformer.git
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.0.0/en_core_web_sm-2.0.0.tar.gz#egg=en_core_web_sm
 spacy~=2.3.7
 numpy~=1.22.3
 pandas~=1.4.1
 torch~=1.11.0
 ipykernel~=6.9.2
+openai~=0.16.0
+waitress~=2.1.1
