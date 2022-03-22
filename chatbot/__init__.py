@@ -1,10 +1,13 @@
 import os
 from flask import Flask, render_template, session
+from dotenv import load_dotenv
 
 from . import db, auth, chat
 
 from .language_model import LanguageModel
 from .grammar_correction import GrammarModel
+
+load_dotenv() # Load env variables
 
 def create_app(test_config=None):
     """ Create the application.
@@ -29,6 +32,11 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # Ensure required environment vars exist
+    env_vars = ['OPENAI_API_KEY', 'OPENAI_ENGINE']
+    for var in env_vars:
+        assert os.getenv(var)
 
     # Initialize the database
     db.init_app(app)
