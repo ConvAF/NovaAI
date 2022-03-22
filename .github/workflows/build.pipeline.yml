@@ -55,12 +55,12 @@ jobs:
         id: commit
         if: steps.branch-info.outputs.GIT_BRANCH == 'main'
         run: |
-          git add tests/coverage-badge.svg
           git config user.name github-actions
           git config user.email github-actions@github.com
-          if [-z "$(git status --porcelain)"]; then
+          if git diff --exit-code; then
             echo "::set-output name=push::false"
           else
+            git add tests/coverage-badge.svg
             git commit -m "update CI status" -a
             echo "::set-output name=push::true"
           fi
