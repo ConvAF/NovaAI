@@ -1,21 +1,35 @@
-from itsdangerous import NoneAlgorithm
-import torch
-# from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
+import os
+import openai
+
+ENGINES = {
+    'ada': 'text-ada-001',
+    'babbage': 'text-babbage-001',
+    'curie': 'text-curie-001',
+    'davinci': 'text-davinci-002'
+}
 
 
+PROMPT_BASES = {
+    'general_chat': "The following is a conversation with an AI Language Teacher called Artemis. Artemis is helpful, funny, very friendly, and very good at teaching English. Artemis helps users to practice English by having conversations."
+}
 
 class LanguageModel():
     """ Language Generation Model
     """
-    def __init__(self):
+    def __init__(self, 
+            prompt_context='general_chat',
+            ):
 
-        model_name = "facebook/blenderbot-400M-distill"
-        # model_name = "facebook/blenderbot-3B"
+        # Init openai
+        openai.api_key = os.getenv("OPENAI_API_KEY")
+        self.engine = os.getenv("OPENAI_ENGINE")
+        self.temperature = 0.5
 
-        # self.tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
-        # self.model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
-        self.tokenizer = None
-        self.model = None
+        # Set context
+        assert prompt_context in PROMPT_BASES.keys()
+        self.prompt_base = PROMPT_BASES[prompt_context]
+
+
 
     def add_response_to_chat_history(self, chat_history):
         """ Generate a response from the bot and append to chat history.
@@ -26,30 +40,71 @@ class LanguageModel():
         if chat_history is None or len(chat_history)==0:
             return chat_history
         
-        # chat_history_ids = self.chat_history_to_ids(chat_history)
 
-        # reply_id = self.model.generate(chat_history_ids, max_length=1250)
-        # reply_text = self.tokenizer.decode(reply_id[0], skip_special_tokens=True).lstrip()
-        reply_text = "This is a dummy reply."
+        reply_text = self.get_response_from_GPT3(chat_history)
 
-        chat_history.append(
-            {
-                'sender': 'bot',
-                'text': reply_text
-            }
-        )
+        if reply_text:
+            chat_history.append(
+                {
+                    'sender': 'bot',
+                    'text': reply_text
+                }
+            )
         return chat_history
 
-
-    def chat_history_to_ids(self, chat_history):
-        """ Convert the chat history to vocabulary ids as input to the model.
+    def get_response_from_GPT3(self, chat_history):
+        """ Get a reply from GPT3 
         
-        Takes all the texts in the chat history, encodes them,
-        concatenates and returns them so the model can predict the response.
+        Returns:
+        --------
+         - reply: str
+            A text string containing just the reply from the model.
+            Example: "I'm fine, how are you?"
         """
-        texts = [message['text'] for message in chat_history]
-        text_ids = [self.tokenizer.encode(text, return_tensors='pt') for text in texts]
-        
-        chat_history_ids = torch.cat(text_ids, dim=-1)
+        prompt = self.create_prompt(chat_history)
 
-        return chat_history_ids
+        response = openai.Completion.create(
+                engine=self.engine,
+                prompt=prompt,
+                temperature=self.temperature,
+            )
+
+        reply = None
+        if response and ('choices' in response) and len(response['choices']):
+
+            reply_raw = response['choices'][0]['text']
+            reply = self.clean_reply_text(reply_raw)
+
+        return reply
+
+    def clean_reply_text(self, text):
+        " Clean up the reply text a bit "
+
+        text = text.strip()
+        # Get rid of "Bot: " at beginning of message
+        reply = ":".join(reply.split(':')[1:]).strip()
+
+        # Sometimes, a partial reply of a user is included. Remove that
+        # Example: "Bot: Hello, how are you? User: "
+        if 'User:' in reply:
+            idx = reply.find('User:')
+            reply = reply[:idx].strip()
+
+        return reply
+        
+
+    def create_prompt(self, chat_history):
+        """ Convert the recent chat history to a prompt for GPT-3.
+        
+        Combines the base prompt and the recent chat history
+        to a prompt for GPT3 to create the next sentence.
+        """
+
+        prompt_base = self.prompt_base
+
+        # Limit the chat_history to the past 100 messages
+        chat_history = chat_history[-100:]
+        prompt_conv = "\n".join([f"{message['sender'].title()}: {message['text']}" for message in chat_history])
+
+        prompt = "\n".join([prompt_base, prompt_conv])
+        return prompt
