@@ -27,7 +27,7 @@ class GrammarModel(Gramformer):
             correction_message = f"{random.choice(message_styles)} \"{corrected_sentence}\" "
         else:
              correction_message = None
-             
+
         return corrected_sentence, correction_message
 
 
@@ -44,7 +44,8 @@ class GrammarModel(Gramformer):
             chat_history.append(
                 {
                     'sender': 'bot',
-                    'text': correction_message
+                    'text': correction_message,
+                    'correction': True
                 }
             )
         return chat_history       
