@@ -9,6 +9,11 @@ from chatbot.db import get_db, init_db
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
+
+def pytest_generate_tests(metafunc):
+    """ Overwrite some test environment variables """
+    os.environ['OPENAI_ENGINE']='ada'
+
 @pytest.fixture
 def app():
     """ Create application instance for testing """
@@ -21,7 +26,7 @@ def app():
     app = create_app(test_config={
         'TESTING': True,
         'DATABASE': db_path,
-        'LOAD_LANGUAGE_MODEL': False
+        'LOAD_LANGUAGE_MODEL': True
     })
 
     with app.app_context():
