@@ -1,12 +1,14 @@
 import pytest
 from flask import session
 from chatbot.language_model import LanguageModel
+from chatbot.grammar_correction import GrammarModel
 
 def test_chat_general(client, auth, app):
     """ Test whether general chat functionality works works """
     
     # Load language model (not loaded in test app by default)
     app.language_model = LanguageModel()
+    app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
     # Test GET
     # Not logged in request redirects to login
@@ -33,6 +35,7 @@ def test_chat_send_message(client, auth, app):
 
     # Load language model (not loaded in test app by default)
     app.language_model = LanguageModel()
+    app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
     auth.login()
     response = client.post(
@@ -59,6 +62,7 @@ def test_clear_chat_history(client, auth, app):
 
     # Load language model (not loaded in test app by default)
     app.language_model = LanguageModel()
+    app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
     # Test that chat gets cleared on call
     with client:
