@@ -9,6 +9,8 @@ with open('requirements.txt','r') as f:
             package_name = req.split('/')[-1].split('.')[0].lower()
             # Replace command
             install_requires[i] = f"{package_name} @ {req}"
+        if 'en_core_web_sm' in req:
+            install_requires[i] = f"en_core_web_sm @ {req}"
 
 setup(name='chatbot',
       version = '0.0.2',
