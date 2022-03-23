@@ -45,6 +45,17 @@ pip install -e .
 
 which installs the application as a package in developer (local edit) mode.
 
+### Configuration
+
+Create a file `.env` at the project root (if it doesn't exist yet)
+and specify the following variables before running the application:
+
+Several variables are stored in the `.env` file and should be configured
+before running the application:
+
+- `OPENAI_API_KEY`: The api key for OpenAi.
+- `OPENAI_ENGINE`: Which GPT-3 engine to use. For testing, a simpler engine is used. Can be one of: ada (cheapest), babbage, curie, davinci (most expensive, most powerful)
+
 ### Running the application
 
 Before running the application, initialize the user database
