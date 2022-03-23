@@ -26,7 +26,7 @@ def app():
     app = create_app(test_config={
         'TESTING': True,
         'DATABASE': db_path,
-        'LOAD_LANGUAGE_MODEL': True
+        'LOAD_GRAMMAR_MODEL': True
     })
 
     with app.app_context():
