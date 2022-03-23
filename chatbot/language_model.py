@@ -77,10 +77,10 @@ class LanguageModel():
 
         return reply
 
-    def clean_reply_text(self, text):
-        " Clean up the reply text a bit "
+    def clean_reply_text(self, reply_raw):
+        " Clean up the reply reply_raw a bit "
 
-        text = text.strip()
+        reply = reply_raw.strip()
         # Get rid of "Bot: " at beginning of message
         reply = ":".join(reply.split(':')[1:]).strip()
 
