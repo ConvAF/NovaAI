@@ -104,7 +104,9 @@ class LanguageModel():
 
         # Limit the chat_history to the past 100 messages
         chat_history = chat_history[-100:]
-        prompt_conv = "\n".join([f"{message['sender'].title()}: {message['text']}" for message in chat_history])
+        # Exclude messages that have a correction
+        prompt_conv = "\n".join([f"{message['sender'].title()}: {message['text']}" for message in chat_history
+                                 if not ('correction' in message.keys())])
 
         prompt = "\n".join([prompt_base, prompt_conv])
         return prompt
