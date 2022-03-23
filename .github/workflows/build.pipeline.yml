@@ -35,7 +35,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         env: # Provide env variables stored in repo secrets
-          OPENAI_API_KEY: ${{ OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_ENGINE: ada
         run: |
           pytest
