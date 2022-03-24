@@ -54,13 +54,18 @@ def test_login(client, auth):
     # Login succeeds
     response = auth.login()
     # Login redirects the user to root
-    assert response.headers['Location'] == 'http://localhost/'
+    assert 'http://localhost/dashboard/' == response.headers['Location']
 
     # After login, user is logged in in session
     with client:
         client.get('/')
         assert session['user_id'] == 1
         assert g.user['email'] == 'test@test.com'
+    
+    # After login, login screen redirects to dashboard
+    with client:
+        response = client.get('/auth/login')
+        assert 'http://localhost/dashboard/' == response.headers['Location']
 
 
 @pytest.mark.parametrize(

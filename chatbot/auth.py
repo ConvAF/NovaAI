@@ -48,10 +48,17 @@ def register():
 def login():
     """ Login route
     """
-    sign_up_success = request.args.get('sign_up_success')
-    if sign_up_success:
-        success_message = "Success! You can now log in."
-        flash(success_message, 'text-success')
+    if request.method == 'GET':
+
+        # If already logged in, redirect to dashboard
+        if g.user:
+            return redirect(url_for("dashboard.dashboard"))
+
+        # Show sign up success method if redirected from signup
+        sign_up_success = request.args.get('sign_up_success')
+        if sign_up_success:
+            success_message = "Success! You can now log in."
+            flash(success_message, 'text-success')
 
     if request.method == 'POST':
         email = request.form['email']
@@ -67,13 +74,12 @@ def login():
         if error is None:
             user_id = user['id']
             set_logged_in_user(user_id)
-            return redirect(url_for("index"))
+            return redirect(url_for("dashboard.dashboard"))
 
         flash(error, 'text-danger')
 
-
-
     return render_template('auth/login.html')
+    
 
 @bp.route('/logout')
 def logout():

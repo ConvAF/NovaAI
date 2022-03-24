@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, session
 from dotenv import load_dotenv
 
-from . import db, auth, chat
+from . import db, auth, chat, dashboard
 
 from .language_model import LanguageModel
 from .grammar_correction import GrammarModel
@@ -44,6 +44,7 @@ def create_app(test_config=None):
     # Register blueprints
     app.register_blueprint(auth.bp)
     app.register_blueprint(chat.bp)
+    app.register_blueprint(dashboard.bp)
 
     # Register routes
     @app.route('/')
