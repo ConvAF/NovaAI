@@ -19,24 +19,27 @@ def register():
     """ Registration route 
     """
     if request.method == 'POST':
-        username = request.form['username']
+        name = request.form['name']
+        email = request.form['email']
         password = request.form['password']
         db = get_db()
         error = None
 
-        if not username:
-            error = 'Username is required.'
+        if not name:
+            error = 'Name is required.'
+        elif not email:
+            error = 'Email is required.'
         elif not password:
             error = 'Password is required.'
 
         if error is None:
             try:
-                create_user(username, password)
+                create_user(name, email, password)
             except db.IntegrityError:
-                error = f"User {username} is already registered."
+                error = f"User with Email {email} is already registered."
             else:
-                return redirect(url_for("auth.login"))
-        flash(error)
+                return redirect(url_for("auth.login", sign_up_success=True))
+        flash(error, 'text-danger')
 
     return render_template('auth/register.html')
 
@@ -45,23 +48,30 @@ def register():
 def login():
     """ Login route
     """
+    sign_up_success = request.args.get('sign_up_success')
+    if sign_up_success:
+        success_message = "Success! You can now log in."
+        flash(success_message, 'text-success')
+
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-        user = get_user_from_db(username)
+        user = get_user_from_db(email)
         
         error = None
         if user is None:
-            error = 'User not found.'
+            error = f'No user with Email {email} found'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Incorrect password'
 
         if error is None:
             user_id = user['id']
             set_logged_in_user(user_id)
-            return redirect(url_for('index'))
+            return redirect(url_for("index"))
 
-        flash(error)
+        flash(error, 'text-danger')
+
+
 
     return render_template('auth/login.html')
 
@@ -108,35 +118,24 @@ def load_logged_in_user():
 #     """ Get the currently active user. """
 #     return session.get('user_id')
 
-def create_user(username: str, password: str):
+def create_user(name: str, email: str, password: str):
     """ Create a user and add to database
 
     Throws a db.IngerityError if user already exists.
-
-    Parameters:
-    -----------
-     - username: str
-        The name of the user.
-     - password: str
-        The password of the user.
     """
     db = get_db()
     db.execute(
-        "INSERT INTO user (username, password) VALUES (?, ?)",
-        (username, generate_password_hash(password)),
+        "INSERT INTO user (name, email, password) VALUES (?, ?, ?)",
+        (name, email, generate_password_hash(password)),
     )
     db.commit()
 
 
-def get_user_from_db(username: str):
+def get_user_from_db(email: str):
     """ Load the user info from the database
-    
-    Parameters:
-    -----------
-     - username: str
     """
     db = get_db()
     user = db.execute(
-        'SELECT * FROM user WHERE username = ?', (username,)
+        'SELECT * FROM user WHERE email = ?', (email,)
     ).fetchone()
     return user

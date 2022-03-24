@@ -1,15 +1,69 @@
 {% extends 'base.html' %}
 
-{% block header %}
-  <h1>{% block title %}Log In{% endblock %}</h1>
-{% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" autofocus="true" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
-  </form>
+
+
+<section class="bg-light py-5">
+  <div class="container px-5 my-5 px-5">
+      <div class="text-center mb-5">
+          <!-- <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div> -->
+          <h2 class="fw-bolder">Sign In</h2>
+          <!-- <p class="lead mb-0">We'd love to hear from you</p> -->
+      </div>
+      <div class="row gx-5 justify-content-center">
+        <div class="col-lg-6">
+          <form id="loginForm" class="mb-5" method="post">
+            <!-- Name input-->
+            <!-- <div class="form-floating mb-3">
+                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                <label for="name">Full name</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+            </div> -->
+            <!-- Email address input-->
+            <div class="form-floating mb-3">
+                <input class="form-control" id="email" type="email" name="email" placeholder="name@example.com" required/>
+                <label for="email">Email address</label>
+                <div class="invalid-feedback">An email is required.</div>
+                <div class="invalid-feedback">Email is not valid.</div>
+            </div>
+            <!-- Password input-->
+            <div class="form-floating mb-3">
+                <input class="form-control" id="password" type="password" name="password" placeholder="password"  required />
+                <label for="password">Password</label>
+                <div class="invalid-feedback">Please enter your password.</div>
+            </div>
+            
+            <!-- Submit flash error/success messages-->
+            <!---->
+            <!-- This is what your users will see when there is-->
+            <!-- an error submitting the form-->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash d-gone text-center {{ category }} mb-3">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- Login Button-->
+            <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Log In">Sign In</button></div>
+
+          </form>
+          <div class="text-center">
+            <p>New here? 
+              <a class="text-decoration-none" href="{{ url_for('auth.register') }}">
+                  Sign up
+              </a>
+            </p>
+          </div>
+        </div>
+        
+
+      </div>
+  </div>
+</section>
+
+
+
 {% endblock %}
