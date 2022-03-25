@@ -9,6 +9,17 @@ from chatbot.auth import login_required
 # Create a blueprint for authentication
 bp = Blueprint('chat', __name__, url_prefix='/chat')
 
+
+@bp.route('/', methods=('GET',))
+@login_required
+def overview():
+    """ Route for the chat overview
+    """
+
+    return render_template('chat/overview.html')
+
+
+
 @bp.route('/general', methods=('GET', 'POST'))
 @login_required
 def general():

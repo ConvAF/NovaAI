@@ -1,15 +1,73 @@
 html {
   font-family: sans-serif;
   background: #fff;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
-body {
+/* body {
   max-width: 960px;
   margin: 0 auto;
   background: white;
+} */
+
+:root {
+  --blue-rgb: 34, 124, 157;
+  --teal-rgb: 23, 195, 178;
+  --yellow-rgb: 255, 203, 119;
+  --cream-rgb: 254, 249, 239;
+  --red-rgb: 254, 109, 115;
+
+  --bg-card-header-opacity: 0.75;
+  --bg-card-body-opacity: 0.1;
 }
 
-.chat_text_input_field {
-  width: 600px;
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: rgb(var(--blue-rgb)) !important;
+  box-shadow: 0 0 0 0.25rem rgb(var(--blue-rgb)) !important;
+  border-color: rgb(var(--blue-rgb)) !important;
+}
+
+.bg-general-chat-header {
+  background-color: rgba(
+    var(--blue-rgb),
+    var(--bg-card-header-opacity)
+  ) !important;
+}
+
+.bg-general-chat-body {
+  background-color: rgba(
+    var(--blue-rgb),
+    var(--bg-card-body-opacity)
+  ) !important;
+}
+
+.bg-situation-header {
+  background-color: rgba(
+    var(--red-rgb),
+    var(--bg-card-header-opacity)
+  ) !important;
+}
+
+.bg-situation-body {
+  background-color: rgba(
+    var(--red-rgb),
+    var(--bg-card-body-opacity)
+  ) !important;
+}
+
+.bg-persona-header {
+  background-color: rgba(
+    var(--yellow-rgb),
+    var(--bg-card-header-opacity)
+  ) !important;
+}
+
+.bg-persona-body {
+  background-color: rgba(
+    var(--yellow-rgb),
+    var(--bg-card-body-opacity)
+  ) !important;
 }

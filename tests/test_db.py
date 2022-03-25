@@ -40,7 +40,7 @@ def test_user_schema(app):
         row = db.execute("select * from user").fetchone()
         
         # Database has correct columns
-        cols = ['username', 'password']
+        cols = ['name', 'email', 'password']
         for col in cols:
             assert(col in row.keys())
 

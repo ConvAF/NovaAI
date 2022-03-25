@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<header class="py-5">
+  <div class="container px-5">
+      
+    <!-- Heading -->
+    <div class="row gx-5 justify-content-center">
+      <div class="col-lg-12 align-middle">
+        <div class="text-left my-3">
+          <h3 class="display-5 fw-bolder text-dark mb-2">Learning Statistics</h3>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- General Statistics -->
+    <div class="row gx-5 justify-content-center">
+        <div class="col-lg-5 align-middle">
+          <div class="text-left my-3">
+            <h3 class="fw-bolder text-dark mb-2">General</h3>
+          </div>
+            <div class="text-left my-2">
+                <p class="lead text-dark-50 mb-4">Here is a summary of your learning progress.</p>                  
+                <ul>
+                  <li>You have a streak of <b>4</b> days 🔥</li>
+                  <li>You have completed <b>12</b> learning challenges.</li>
+                  <li>You've written over <b>200</b> messages.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-7">
+          {{ plot_activity|safe }}
+        </div>
+    </div>
+
+    <!-- Grammar Statistics -->
+    <div class="row gx-5 justify-content-center">
+      <div class="col-lg-5 align-middle">
+        <div class="text-left my-3">
+          <h3 class="fw-bolder text-dark mb-2">Grammar</h3>
+        </div>
+          <div class="text-left my-2">
+              <p class="lead text-dark-50 mb-4">Let's breakdown the areas you can improve.</p>                  
+              <ul>
+                <li>The word type you struggle with most are <b>verbs</b>.</li>
+                <li>Within verb errors, you most often got <b>past tense</b> wrong.</li>
+                <li>You make few errors when using <b>prepositions</b> - good job!</li>
+              </ul>
+          </div>
+      </div>
+      <div class="col-lg-7">
+        {{ plot_grammar|safe }}
+      </div>
+  </div>
+
+
+  <!-- Suggested Learning Path -->
+  <div class="row gx-5 justify-content-center">
+    <div class="col-lg-12 align-middle">
+      <div class="text-left my-3">
+        <h3 class="display-7 fw-bolder text-dark mb-4">Suggested Learning Journey</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested Chats Cards -->
+  <div class="row gx-4 px-0 mb-3 justify-content-center">
+    <div class="col-lg-4 mb-5 mb-lg-0">
+      <div class="card text-dark mb-3" style="max-width: 18rem;">
+        <div class="card-header text-white bg-general-chat-header bg-gradient">General Chat</div>
+        <div class="card-body bg-general-chat-body bg-gradient">
+          <h5 class="card-title">Beginner Chat</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-lg-4 mb-5 mb-lg-0">
+      <div class="card text-dark mb-3" style="max-width: 18rem;">
+        <div class="card-header text-white bg-situation-header bg-gradient">Situation</div>
+        <div class="card-body bg-situation-body bg-gradient">
+          <h5 class="card-title">Restaurant</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-5 mb-lg-0">
+      <div class="card text-dark mb-3" style="max-width: 18rem;">
+        <div class="card-header text-white bg-situation-header bg-gradient">Situation</div>
+        <div class="card-body bg-situation-body bg-gradient">
+          <h5 class="card-title">Restaurant</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="row gx-4 px-0 justify-content-center">
+    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+      <a class="btn btn-outline-secondary btn-md px-4 me-sm-3" href="{{ url_for('chat.overview') }}">See all chats</a>
+    </div>
+  </div>
+    
+
+  </div>
+</header>
+
+
+
+{% endblock %}

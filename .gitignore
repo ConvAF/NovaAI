@@ -32,3 +32,6 @@ instance/
 # Tests
 htmlcov/
 .coverage
+
+# Additional folders
+notes/
