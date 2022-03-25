@@ -11,29 +11,30 @@ def test_register(client, app):
     # Test POST
     # Registration succeeds
     response = client.post(
-        '/auth/register', data={'username': 'a', 'password': 'a'}
+        '/auth/register', data={'name': 'a', 'email': 'a@a.com', 'password': 'a'}
     )
     # Successful registration redirects to login
-    assert 'http://localhost/auth/login' == response.headers['Location']
+    assert 'http://localhost/auth/login?sign_up_success=True' == response.headers['Location']
     # Test user has been added to database
     with app.app_context():
         assert get_db().execute(
-            "SELECT * FROM user WHERE username = 'a'",
+            "SELECT * FROM user WHERE email = 'a@a.com'",
         ).fetchone() is not None
     # app.teardown_appcontext()
 
 @pytest.mark.parametrize(
-    ('username', 'password', 'message'), (
-        ('', '', b'Username is required.'),
-        ('a', '', b'Password is required.'),
-        ('test', 'test', b'User test is already registered.')
+    ('name', 'email', 'password', 'message'), (
+        ('', '', '', b'Name is required.'),
+        ('a', '', '', b'Email is required.'),
+        ('a', 'a', '', b'Password is required.'),
+        ('test', 'test@test.com', 'test', b'User with Email test@test.com is already registered.')
     )
 )
-def test_register_validate_input(client, username, password, message):
+def test_register_validate_input(client, name, email, password, message):
     """ Test responses for different register input """
     response = client.post(
         '/auth/register',
-        data={'username': username, 'password': password}
+        data={'name': name, 'email': email, 'password': password}
     )
     # Note: response data is in bytes
     assert message in response.data
@@ -43,28 +44,39 @@ def test_login(client, auth):
     # GET
     # View is returned
     assert client.get('/auth/login').status_code == 200
+
+    # View is returned after signup
+    response = client.get('/auth/login?sign_up_success=True')
+    assert response.status_code == 200
+    assert b'Success! You can now log in.' in response.data
+
     # POST
     # Login succeeds
     response = auth.login()
     # Login redirects the user to root
-    assert response.headers['Location'] == 'http://localhost/'
+    assert 'http://localhost/dashboard/' == response.headers['Location']
 
     # After login, user is logged in in session
     with client:
         client.get('/')
         assert session['user_id'] == 1
-        assert g.user['username'] == 'test'
+        assert g.user['email'] == 'test@test.com'
+    
+    # After login, login screen redirects to dashboard
+    with client:
+        response = client.get('/auth/login')
+        assert 'http://localhost/dashboard/' == response.headers['Location']
 
 
 @pytest.mark.parametrize(
-    ('username', 'password', 'message'), (
-        ('a', 'test', b'User not found.'),
-        ('test', 'a', b'Incorrect password.'),
+    ('email', 'password', 'message'), (
+        ('asdf@asdf.com', 'test', b'No user with Email asdf@asdf.com found'),
+        ('test@test.com', 'a', b'Incorrect password'),
     )
 )
-def test_login_validate_input(auth, username, password, message):
-    """ Test respsonses for different login input """
-    response = auth.login(username, password)
+def test_login_validate_input(auth, email, password, message):
+    """ Test responses for different login input """
+    response = auth.login(email, password)
     assert message in response.data
 
 

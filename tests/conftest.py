@@ -26,7 +26,7 @@ def app():
     app = create_app(test_config={
         'TESTING': True,
         'DATABASE': db_path,
-        'LOAD_GRAMMAR_MODEL': True
+        'LOAD_GRAMMAR_MODEL': False
     })
 
     with app.app_context():
@@ -57,11 +57,11 @@ class AuthActions(object):
     def __init__(self, client):
         self._client = client
 
-    def login(self, username='test', password='test'):
+    def login(self, email='test@test.com', password='test'):
         """ Login as a user called 'test' """
         return self._client.post(
             '/auth/login',
-            data={'username': username, 'password': password}
+            data={'email': email, 'password': password}
         )
     
     def logout(self):
