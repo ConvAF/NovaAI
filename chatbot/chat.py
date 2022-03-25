@@ -15,9 +15,15 @@ bp = Blueprint('chat', __name__, url_prefix='/chat')
 def overview():
     """ Route for the chat overview
     """
-
     return render_template('chat/overview.html')
 
+
+@bp.route('/<chat_scenario>', methods=('GET', 'POST'))
+@login_required
+def chat(chat_scenario):
+    """ Route for chat with variable scenarios
+    """
+    return render_template('chat/chat.html', chat_scenario=chat_scenario)
 
 
 @bp.route('/general', methods=('GET', 'POST'))
