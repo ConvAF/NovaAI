@@ -3,13 +3,30 @@ from flask import session
 from chatbot.language_model import LanguageModel
 from chatbot.grammar_correction import GrammarModel
 
+def test_chat_overview(client, auth, app):
+    """ Test the chat overview page """
+    # Test GET
+    # Not logged in request redirects to login
+    response = client.get('/chat/')
+    assert response.status_code == 302
+    assert 'http://localhost/auth/login' == response.headers['Location']
+    
+
+    with client: # Inside app context
+        # Logged in returns template
+        auth.login()    
+        response = client.get('/chat/')
+        assert response.status_code == 200
+
+
+
 def test_chat_general(client, auth, app):
     """ Test whether general chat functionality works works """
     
     # Load language model (not loaded in test app by default)
+    app.config['LOAD_GRAMMAR_MODEL'] = True # Only then used
     app.language_model = LanguageModel()
     app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
-
     # Test GET
     # Not logged in request redirects to login
     response = client.get('/chat/general')

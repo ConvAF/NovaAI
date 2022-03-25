@@ -2,12 +2,19 @@
 
 ![CI](https://github.com/franksh/chatbot/actions/workflows/build.pipeline.yml/badge.svg)
 ![Coverage badge](tests/coverage-badge.svg)
-
-A language learning Chatbot
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 ## Overview
 
-tbd
+Chatbot is an application that uses conversational AI for language learning to help users gain fluency in their target language (work in progress).
+
+Users can chat with a conversational AI, practice specific scenarios, and track their learning progress.
+
+Features:
+
+- A language learning website implemented Flask
+- Chats with a conversational AI powered by GPT-3
+- Grammar correction and other learning feaatures
 
 ## Usage
 
