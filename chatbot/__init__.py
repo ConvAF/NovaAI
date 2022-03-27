@@ -1,6 +1,8 @@
 import os
-from flask import Flask, render_template, session
+import json
+from pathlib import Path
 from dotenv import load_dotenv
+from flask import Flask, render_template, session
 
 from . import db, auth, chat, dashboard
 
@@ -56,6 +58,11 @@ def create_app(test_config=None):
     app.language_model = LanguageModel()
     if app.config['LOAD_GRAMMAR_MODEL']:
         app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
+
+    # Load prompts data
+    prompts_path = Path(app.root_path) / 'prompts.json'
+    app.prompts = json.loads(open(prompts_path,'r').read())
+
 
     return app
 
