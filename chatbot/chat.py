@@ -3,6 +3,7 @@ Chat views.
 """
 from flask import Blueprint, render_template, request, session, current_app, abort
 from wtforms import Form, StringField, validators
+import json
 
 from chatbot.auth import login_required
 
@@ -39,7 +40,7 @@ def chat(chat_scenario):
     # request.referrer.split('/')[-1]
 
     prompt = current_app.prompts[chat_scenario]
-    prompt_text = prompt['text']
+    # prompt_text = prompt['text']
     # if chat_scenario 
     # prompt = current_app.prompts
 
@@ -47,7 +48,12 @@ def chat(chat_scenario):
     chat_history = session.get('chat_history')
     # Create if not exists
     if not chat_history:
-        chat_history = []
+        # chat_history = []
+        chat_history = ChatHistory(
+                                    prompt_base = prompt['text'],
+                                    tag_bot = prompt['tag_bot'],
+                                    tag_user = prompt['tag_user']
+                                   )
 
     # On text form submission
     if request.method == 'POST':
@@ -56,17 +62,18 @@ def chat(chat_scenario):
             clear_chat_history()
         elif request.form['submit_button'] == 'Send text' and form.validate():
             # Add text to chat history
-            chat_history.append(
-                {
-                    'sender': 'user',
-                    'text': form.text_input.data
-                }
-            )
+            chat_history.add_user_message(form.text_input.data)
+            # chat_history.append(
+            #     {
+            #         'sender': 'user',
+            #         'text': form.text_input.data
+            #     }
+            # )
 
             # Clear form
             form.text_input.data = ""
             # Get response from bot
-            chat_history = get_bot_response(chat_history, prompt_text)
+            chat_history = get_bot_response(chat_history)
             # Update chat history
             session['chat_history'] = chat_history
 
@@ -74,65 +81,19 @@ def chat(chat_scenario):
     return render_template('chat/chat.html', 
                             # chat_scenario=chat_scenario,
                             prompt=prompt,
+                            messages=chat_history.messages,
                             form=form,
                             loc = userOpensChatFirstTime
                             )
 
 
-# @bp.route('/general', methods=('GET', 'POST'))
-# @login_required
-# def general():
-#     """ Route for general simple chat.
-#     """
-#     form = ChatForm(request.form)
-
-#     # Get chat history
-#     chat_history = session.get('chat_history')
-#     # Create if not exists
-#     if not chat_history:
-#         chat_history = []
-
-#     # On text form submission
-#     if request.method == 'POST':
-#         if request.form['submit_button'] == 'Clear chat':
-#             # Clear chat history
-#             clear_chat_history()
-#         elif request.form['submit_button'] == 'Send text' and form.validate():
-#             # Add text to chat history
-#             chat_history.append(
-#                 {
-#                     'sender': 'user',
-#                     'text': form.text_input.data
-#                 }
-#             )
-
-#             # Clear form
-#             form.text_input.data = ""
-#             # Get response from bot
-#             chat_history = get_bot_response(chat_history)
-#             # Update chat history
-#             session['chat_history'] = chat_history
-        
-#     return render_template('chat/general_chat.html', form=form)
-
-
-def get_bot_response(chat_history, prompt_text):
+def get_bot_response(chat_history):
     """ Get response from the bot """
-    # Here we have to get the response from the bot
-    # chat_history should be sent to the model class
-    # Something like:
-    # response = model.predict(chat_history)
-    # chat_history_new = chat_history.append(response)
-    # Dummy response for now
-    # chat_history.append(
-    #     {
-    #         'sender': 'bot',
-    #         'text': 'This is an automated dummy reply.'
-    #     }
-    # )
+
     if current_app.config['LOAD_GRAMMAR_MODEL']:
-        chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
-    chat_history = current_app.language_model.add_response_to_chat_history(chat_history, prompt_text)
+        pass
+        # chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
+    chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
 
     return chat_history
 
@@ -140,6 +101,121 @@ def clear_chat_history():
     """ Clear the chat history """
     if session.get('chat_history'):
         session.pop('chat_history')
+
+
+class ChatMessage():
+
+    def __init__(self,
+                sender: str,
+                text: str,
+                correction: bool = False
+                ):
+
+        assert sender in ['user', 'bot']
+        self.sender = sender
+        self.text = text
+        self.correction = correction
+
+    def __repr__(self):
+        return f"{self.sender}: {self.text}"
+    
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
+
+    @staticmethod
+    def fromJSON(obj_json):
+        obj_dict = json.loads(obj_json)
+        return ChatMessage(**obj_dict)
+
+
+class ChatHistory():
+
+    def __init__(self,
+                    prompt_base,
+                    tag_bot,
+                    tag_user
+                    ):
+
+        self.prompt_base = prompt_base
+        self.tag_bot = tag_bot
+        self.tag_user = tag_user
+        # self.chat_scenario = chat_scenario
+        # self.prompt_data = prompt_data
+        # self.prompt_base = prompt_data['text']
+        # self.tag_bot = prompt_data['tag_bot']
+        # self.tag_user = prompt_data['tag_user']
+
+        self.messages = []
+
+    def add_user_message(self, text: str):
+        message = ChatMessage(sender='user', text=text)
+        self.add_message(message)
+    
+    def add_bot_message(self, text: str):
+        message = ChatMessage(sender='bot', text=text)
+        self.add_message(message)
+
+    def add_message(self, chat_message: ChatMessage):
+        self.messages.append(chat_message)
+
+    def get_as_prompt_with_dialog(self, limit_messages: int=10):
+        """ Returns the chat history in a Dialog format
+
+        Pattern is:
+        prompt_base
+
+        tag_user: message.text
+        tag_bot: message.text
+        etc.
+        """
+        messages = self.messages[-limit_messages:]
+        # Exclude messages that have a correction
+        dialog = "\n".join([f""  ])
+
+
+        dialog = "\n".join(
+            [f"{self.format_sender_tag(message.sender)}: {message.text}"
+                for message in messages
+                if not message.correction
+            ])
+
+        prompt_with_dialog = "\n".join([self.prompt_base, dialog])
+        return prompt_with_dialog
+
+
+    def format_sender_tag(self, sender):
+        if sender=='bot':
+            return self.tag_bot.title()
+        if sender=='user':
+            return self.tag_user.title()
+
+    def __len__(self):
+        return len(self.messages)
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
+
+    def __repr__(self):
+        return self.toJSON()
+
+    @staticmethod
+    def fromJSON(obj_json):
+        obj_dict = json.loads(obj_json)
+
+        messages_json = obj_dict.pop('messages') 
+        ch = ChatHistory(**obj_dict)
+        
+        if messages_json and len(messages_json)!=0:
+            for m_json in messages_json:
+                # m = ChatMessage.fromJSON(m_json)
+                m = ChatMessage(**m_json)
+                ch.add_message(m)
+
+        return ch
+
+        
 
 class ChatForm(Form):
     text_input = StringField('Input',

@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from flask import current_app
 
+from chatbot.chat import ChatHistory
+
 ENGINES = {
     'ada': 'text-ada-001',
     'babbage': 'text-babbage-001',
@@ -14,40 +16,28 @@ ENGINES = {
 class LanguageModel():
     """ Language Generation Model
     """
-    def __init__(self, 
-            prompt_context='general_chat',
-            ):
+    def __init__(self):
 
         # Init openai
         openai.api_key = os.getenv("OPENAI_API_KEY")
         self.engine = os.getenv("OPENAI_ENGINE")
         self.temperature = 0.5
-
-        # Load the prompts for all scenarios
         
 
-    def add_response_to_chat_history(self, chat_history, prompt_text):
+    def add_response_to_chat_history(self, chat_history: ChatHistory):
         """ Generate a response from the bot and append to chat history.
-        
-        Converts the chat history to a flat string of ids,
-        and generates a prediction from the Blenderbot model.
         """
-        if chat_history is None or len(chat_history)==0:
-            return chat_history
+        # if chat_history is None or len(chat_history)==0:
+        #     return chat_history
         
-
-        reply_text = self.get_response_from_GPT3(chat_history, prompt_text)
+        reply_text = self.get_response_from_GPT3(chat_history)
 
         if reply_text:
-            chat_history.append(
-                {
-                    'sender': 'bot',
-                    'text': reply_text
-                }
-            )
+            chat_history.add_bot_message(reply_text)
         return chat_history
 
-    def get_response_from_GPT3(self, chat_history, prompt_text):
+
+    def get_response_from_GPT3(self, chat_history):
         """ Get a reply from GPT3 
         
         Returns:
@@ -56,7 +46,8 @@ class LanguageModel():
             A text string containing just the reply from the model.
             Example: "I'm fine, how are you?"
         """
-        prompt_with_dialog = self.create_prompt_with_dialog(chat_history, prompt_text)
+        # prompt_with_dialog = self.create_prompt_with_dialog(chat_history, prompt_text)
+        prompt_with_dialog = chat_history.get_as_prompt_with_dialog()
 
         response = openai.Completion.create(
                 engine=self.engine,
@@ -68,11 +59,14 @@ class LanguageModel():
         if response and ('choices' in response) and len(response['choices']):
 
             reply_raw = response['choices'][0]['text']
-            reply = self.clean_reply_text(reply_raw)
+            reply = self.clean_reply_text(reply_raw,
+                                          tag_bot = chat_history.tag_bot,
+                                          tag_user = chat_history.tag_user
+                                          )
 
         return reply
 
-    def clean_reply_text(self, reply_raw):
+    def clean_reply_text(self, reply_raw, tag_bot, tag_user):
         " Clean up the reply reply_raw a bit "
 
         reply = reply_raw.strip()
@@ -81,14 +75,14 @@ class LanguageModel():
 
         # Sometimes, a partial reply of a user is included. Remove that
         # Example: "Bot: Hello, how are you? User: "
-        if 'User:' in reply:
-            idx = reply.find('User:')
+        if f'{tag_user}:' in reply:
+            idx = reply.find(f'{tag_user}:')
             reply = reply[:idx].strip()
 
         return reply
         
 
-    def create_prompt_with_dialog(self, chat_history, prompt_text) -> str:
+    # def create_prompt_with_dialog(self, chat_history, prompt_text) -> str:
         """ Create a prompt to get a response from GPT-3.
         
         Combines the base prompt and the recent chat history
@@ -100,10 +94,10 @@ class LanguageModel():
         # prompt_text = prompt['text']
 
         # Limit the chat_history to the past 100 messages
-        chat_history = chat_history[-100:]
-        # Exclude messages that have a correction
-        dialog = "\n".join([f"{message['sender'].title()}: {message['text']}" for message in chat_history
-                                 if not ('correction' in message.keys())])
+        # messages = chat_history.messages[-10:]
+        # # Exclude messages that have a correction
+        # dialog = "\n".join([f"{message['sender'].title()}: {message['text']}" for message in messages
+        #                          if not ('correction' in message.keys())])
 
-        prompt_with_dialog = "\n".join([prompt_text, dialog])
-        return prompt_with_dialog
+        # prompt_with_dialog = "\n".join([prompt_text, dialog])
+        # return prompt_with_dialog
