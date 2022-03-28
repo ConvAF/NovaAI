@@ -26,7 +26,7 @@ html {
 .btn-primary:active,
 .btn-primary:visited {
   background-color: rgb(var(--blue-rgb)) !important;
-  box-shadow: 0 0 0 0.25rem rgb(var(--blue-rgb)) !important;
+  /* box-shadow: 0 0 0 0.25rem rgb(var(--blue-rgb)) !important; */
   border-color: rgb(var(--blue-rgb)) !important;
 }
 
@@ -44,14 +44,14 @@ html {
   ) !important;
 }
 
-.bg-situation-header {
+.bg-scenario-header {
   background-color: rgba(
     var(--red-rgb),
     var(--bg-card-header-opacity)
   ) !important;
 }
 
-.bg-situation-body {
+.bg-scenario-body {
   background-color: rgba(
     var(--red-rgb),
     var(--bg-card-body-opacity)
@@ -70,4 +70,50 @@ html {
     var(--yellow-rgb),
     var(--bg-card-body-opacity)
   ) !important;
+}
+
+/* Chat */
+
+chat-online {
+  color: #34ce57;
+}
+
+.chat-offline {
+  color: #e4606d;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  max-height: 800px;
+  overflow-y: scroll;
+}
+
+.chat-message-left,
+.chat-message-right {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.chat-message-left {
+  margin-right: auto;
+}
+
+.chat-message-right {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+.py-3 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+.px-4 {
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+.flex-grow-0 {
+  flex-grow: 0 !important;
+}
+.border-top {
+  border-top: 1px solid #dee2e6 !important;
 }

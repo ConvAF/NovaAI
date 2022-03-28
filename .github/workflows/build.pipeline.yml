@@ -38,7 +38,6 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_ENGINE: ada
         run: |
-          pytest
           coverage run -m pytest
           coverage report
           coverage html

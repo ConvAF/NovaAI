@@ -34,34 +34,18 @@
     
       <!-- Featured Chats Cards -->
       <div class="row gx-4 px-0 mb-3 justify-content-center">
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <div class="card text-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header text-white bg-general-chat-header bg-gradient">General Chat</div>
-            <div class="card-body bg-general-chat-body bg-gradient">
-              <h5 class="card-title">Beginner Chat</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        {% for prompt_key, prompt_data in featured_prompts.items() %} 
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="card text-dark mb-3" style="max-width: 18rem;">
+              <div class="card-header text-white bg-{{ prompt_data['category'].replace('_', '-') }}-header bg-gradient">{{ prompt_data['category'].replace("_", " ") | title }}</div>
+              <div class="card-body bg-{{ prompt_data['category'].replace('_', '-') }}-body bg-gradient">
+                <h5 class="card-title">{{ prompt_data['label'] }}</h5>
+                <p class="card-text">{{ prompt_data['description_short'] }}</p>
+                <a href="{{ url_for('chat.chat', chat_scenario=prompt_key) }}" class="stretched-link"></a>
+              </div>
             </div>
           </div>
-
-        </div>
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <div class="card text-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header text-white bg-situation-header bg-gradient">Situation</div>
-            <div class="card-body bg-situation-body bg-gradient">
-              <h5 class="card-title">Restaurant</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <div class="card text-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header text-white bg-persona-header bg-gradient">Persona</div>
-            <div class="card-body bg-persona-body bg-gradient">
-              <h5 class="card-title">Persona: Shakespeare</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
 
       <div class="row gx-4 px-0 justify-content-center">
