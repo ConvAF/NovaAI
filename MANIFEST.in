@@ -1,4 +1,5 @@
 include chatbot/schema.sql
 graft chatbot/static
 graft chatbot/templates
+graft chatbot/data
 global-exclude *.pyc
