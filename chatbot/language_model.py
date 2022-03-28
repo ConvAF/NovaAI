@@ -26,7 +26,7 @@ class LanguageModel():
         # Load the prompts for all scenarios
         
 
-    def add_response_to_chat_history(self, chat_history):
+    def add_response_to_chat_history(self, chat_history, prompt_text):
         """ Generate a response from the bot and append to chat history.
         
         Converts the chat history to a flat string of ids,
@@ -36,7 +36,7 @@ class LanguageModel():
             return chat_history
         
 
-        reply_text = self.get_response_from_GPT3(chat_history)
+        reply_text = self.get_response_from_GPT3(chat_history, prompt_text)
 
         if reply_text:
             chat_history.append(
@@ -47,7 +47,7 @@ class LanguageModel():
             )
         return chat_history
 
-    def get_response_from_GPT3(self, chat_history):
+    def get_response_from_GPT3(self, chat_history, prompt_text):
         """ Get a reply from GPT3 
         
         Returns:
@@ -56,7 +56,7 @@ class LanguageModel():
             A text string containing just the reply from the model.
             Example: "I'm fine, how are you?"
         """
-        prompt_with_dialog = self.create_prompt_with_dialog(chat_history)
+        prompt_with_dialog = self.create_prompt_with_dialog(chat_history, prompt_text)
 
         response = openai.Completion.create(
                 engine=self.engine,
@@ -88,17 +88,16 @@ class LanguageModel():
         return reply
         
 
-    def create_prompt_with_dialog(self, chat_history,
-                                  chat_type='general_chat_intermediate') -> str:
+    def create_prompt_with_dialog(self, chat_history, prompt_text) -> str:
         """ Create a prompt to get a response from GPT-3.
         
         Combines the base prompt and the recent chat history
         to a prompt with dialog for GPT3 to create the next sentence.
         """
-        prompts = current_app.prompts
-        assert chat_type in prompts.keys()
-        prompt = prompts[chat_type]
-        prompt_text = prompt['text']
+        # prompts = current_app.prompts
+        # assert chat_type in prompts.keys()
+        # prompt = prompts[chat_type]
+        # prompt_text = prompt['text']
 
         # Limit the chat_history to the past 100 messages
         chat_history = chat_history[-100:]

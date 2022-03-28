@@ -93,13 +93,13 @@ def test_login_required(client, auth):
     """ Test that login is required for protected views """
     # Test redirect to login url
     with client:
-        response = client.get('/chat/general')
+        response = client.get('/chat/general_chat_beginner')
         assert response.status_code == 302 # Redirect has occured
         assert 'http://localhost/auth/login' == response.headers['Location']
     
     # Now logged in
     auth.login()
     with client:
-        response = client.get('/chat/general')
+        response = client.get('/chat/general_chat_beginner')
         assert response.status_code == 200 # No redirect
 
