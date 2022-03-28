@@ -60,7 +60,7 @@ def create_app(test_config=None):
         app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
     # Load prompts data
-    prompts_path = Path(app.root_path) / 'prompts.json'
+    prompts_path = Path(app.root_path) / 'data'/ 'prompts.json'
     app.prompts = json.loads(open(prompts_path,'r').read())
 
 
