@@ -30,7 +30,7 @@ def test_grammar_correction_model_response(app):
     assert len(chat_history_response_correct) == len(chat_history_correct_old)
 
     # 2. The sentence is incorrect (correction).
-    chat_history_incorrect = [{'sender': 'User', 'text': 'Thanks you.'}]
+    chat_history_incorrect = [{'sender': 'User', 'text': 'After he go to school, he walk home'}]
     chat_history_incorrect_old = chat_history_incorrect.copy()
     chat_history_response_incorrect = app.grammar_correction.add_correction_to_chat_history(chat_history_incorrect)
     # The chat history has increased by 1 (correction)

@@ -2,6 +2,7 @@ from gramformer import Gramformer
 import torch
 import spacy
 import random
+from thefuzz import fuzz
 
 class GrammarModel(Gramformer):
     """
@@ -9,7 +10,7 @@ class GrammarModel(Gramformer):
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gm = super().__init__(models=1, use_gpu=False)
-
+        self.ignore_errors = ['OTHER', 'ORTH']
 
     def grammar_correction(self,last_user_input):
         """
@@ -39,8 +40,10 @@ class GrammarModel(Gramformer):
         last_user_input = chat_history[-1].get('text')
         corrected_sentence, correction_message = self.grammar_correction(last_user_input)
         error_types = self.get_edits(last_user_input, corrected_sentence)
-
-        if correction_message:
+        relevant_error = any(error not in self.ignore_errors for error in error_types) # check if there is an error in the sentence which is not in the ignore list 
+        token_sort_ratio = fuzz.token_sort_ratio(corrected_sentence, last_user_input) # calculate token similarity (ignoring punctuation and casing)
+        
+        if correction_message and relevant_error and token_sort_ratio != 100:
             chat_history.append(
                 {
                     'sender': 'bot',
@@ -48,7 +51,8 @@ class GrammarModel(Gramformer):
                     'correction': True
                 }
             )
-        return chat_history       
+        
+        return chat_history      
 
 
     def _get_edits(self, input_sentence, corrected_sentence):
