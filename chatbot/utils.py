@@ -55,7 +55,12 @@ def get_error_distribution_plot():
 
 
 class CustomJSONEncoder(JSONEncoder):
-    """ Custom JSON encoder to encode custom objects """
+    """ Custom JSON encoder to encode custom objects 
+    
+    This is included so that the ChatHistory can be JSON-serialized,
+    so that it can be saved in the flask session object (which only
+    accepts jsons)
+    """
     def default(self, obj):
         # return super(CustomJSONEncoder, self).defaults(obj)
 
@@ -87,3 +92,17 @@ class CustomJSONDecoder(JSONDecoder):
             chat_history_json = obj_json['chat_history']
             obj_json['chat_history'] = ChatHistory.fromJSON(chat_history_json)
         return obj_json
+
+def get_simple_chat_history():
+    """ Returns a minimal chat history """
+    ch = ChatHistory(prompt_base = "The following is a conversation between a Bot and a User.", tag_bot = "Bot", tag_user = "User")
+    ch.add_bot_message("Hello User, how are you doing?")
+    ch.add_user_message("Hi Bot! Thank you, I am doing fine. How are you?")
+    return ch
+
+def print_chat_history(chat_history: ChatHistory):
+    """ Print a chat history to stdout """
+    import sys
+    print("-----------------\nChat History\n\n", chat_history, file=sys.stdout)
+    print(f"-----------------\nChat History\n\n{chat_history.get_as_prompt_with_dialog()}", file=sys.stdout)
+        
