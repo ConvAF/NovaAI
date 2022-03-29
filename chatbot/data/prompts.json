@@ -13,7 +13,7 @@
         "category": "general_chat",
         "label": "Intermediate",
         "description_short": "This is a placeholder for the short description of the chat type.",
-        "text": "In this conversation, the AI Teacher is discussing everyday topics with the student. Examples of topics are: greetings, introducing each other, telling time, talking about family and hobbies, counting. The teacher uses beginner level English. The conversation is made with short and simple sentences. After each interaction, the AI Teacher asks a new question.\nTeacher: Tell me, what would you like to talk about today?\nStudent: What do you suggest?",
+        "text": "In this conversation, the AI Teacher is discussing everyday topics with the student. Examples of topics are: greetings, introducing each other, telling time, talking about family and hobbies, counting. The AI teacher is friendly, cheerful and helpful. The AI Teacher asks a lot of questions and keeps the conversation going.\nTeacher: Tell me, what would you like to talk about today?\nStudent: What do you suggest?",
         "tag_bot": "Teacher",
         "tag_user": "Student"
     },
@@ -32,7 +32,7 @@
         "label": "Bakery",
         "description_short": "This is a placeholder for the short description of the chat type.",
         "description_long": "This is a placeholder for the longer description of the chat type.<br>It is intended to be displayed when a user starts a scenario, for example",
-        "text": "The following is a conversation with Lola the baker. Lola is helpful, clever, and very friendly.\nCustomer: Good morning!\nLola: Hello, how can I help you?",
+        "text": "The following is a conversation between Lola the baker and customer. Lola sells baked goods in her bakery. Lola is helpful, clever, and very friendly.\nCustomer: Good morning!\nLola: Hello, how can I help you?",
         "tag_bot": "Lola",
         "tag_user": "Customer",
         "tasks": [

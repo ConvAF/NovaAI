@@ -1,76 +1,76 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="py-5 border-bottom bg-white">
+<section class="py-5 bg-white">
   <div class="container px-5 my-1">
 
   <h1 class="h3 mb-3">{{ prompt['category'].replace("_", " ") | title }} - {{ prompt['label'] }}</h1>
-  <div class="card">
-    <div class="row gx-4">
-      
+  <div class="row gx-4 justify-content-center">
+    
 
-      <!-- Chat Box -->
+    <!-- Chat Box -->
 
-      <div class="col-9">
-        <div class="position-relative">
-          <div class="chat-messages p-4">
+    <div class="col-9 align-middle">
+      <div class="position-relative card my-2">
+        <div class="chat-messages p-4">
 
-            <!-- Actual chat messages -->
-            {% for message in messages %}
-              <div class="chat-message-{{ 'left' if message['sender']=='bot' else 'right' }} pb-4">
-                <div>
-                  <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"> -->
-                  <div class="feature border border-dark text-dark rounded-circle mb-0" style="width: 3rem; height: 3rem">
-                    <i class="bi bi-{{ 'robot' if message['sender']=='bot' else 'person' }}" style="font-size: 2rem;"></i>
-                  </div>
-                  <!-- <div class="text-muted small text-nowrap mt-2">2:33 am</div> -->
-                </div>
-                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                  <!-- <div class="font-weight-bold mb-1">{{ message['sender']|title }}</div> -->
-                  {{ message['text'] }}
-                </div>
+          <!-- Actual chat messages -->
+          {% for message in messages|reverse %}
+            <div class="chat-message-{{ 'left' if message['sender']=='bot' else 'right' }} d-flex pb-4">
+              <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"> -->
+              <!-- Avatar image -->
+              <div class="chat-message-avatar feature text-dark rounded-circle mb-0 align-self-end mx-1" style="width: 2rem; height: 2rem">
+                <i class="bi bi-{{ 'robot' if message['sender']=='bot' else 'person' }}" style="font-size: 2rem;"></i>
               </div>
-            {% endfor %}
-          </div>
-        </div>
-
-        <form method="post">
-          <div class="flex-grow-0 py-3 px-4 border-top">
-            <div class="input-group">
-              <!-- <dl>
-                {{ form.text_input(autocomplete="off", autofocus="true") }}
-              </dl> -->
-              {{ form.text_input(autocomplete="off", autofocus="true") }}
-              <!-- <input type="text" class="form-control" placeholder="Type your message">{{ form.text_input(autocomplete="off", autofocus="true") }}</input> -->
-              <!-- <button class="btn btn-primary">Send</button> -->
-              <input class="btn btn-primary" type="submit" name="submit_button" value="Send text">
-              <input class="btn btn-outline-secondary" type="submit" name="submit_button" value="Clear chat">
+              <!-- <div class="text-muted small text-nowrap mt-2">2:33 am</div> -->
+              <!-- Message box -->
+              <div class="d-flex chat-message-text-box-{{ message['sender'] }} flex-shrink-1 align-self-start py-2 px-3 mb-3">
+                <!-- <div class="font-weight-bold mb-1">{{ message['sender']|title }}</div> -->
+                <span>{{ message['text'] }}</span>
+              </div>
             </div>
-          </div>
-        </form>
+          {% endfor %}
+        </div>
       </div>
 
-      <!-- Task Box -->
-      <div class="col-3 border-left">
-        {% if prompt['tasks'] %}
-        <div>
-          <div class="text-left my-3">
-            <h5 class="text-dark mb-4">Tasks</h5>
-          </div>
-          <div class="list-group">
-            {% for task in prompt['tasks'] %}
-            <label class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" value="">
-              {{ task }}
-            </label>
-            {% endfor %}
+      <form method="post">
+        <div class="flex-grow-0 py-3 px-4">
+          <div class="input-group">
+            <!-- <dl>
+              {{ form.text_input(autocomplete="off", autofocus="true") }}
+            </dl> -->
+            {{ form.text_input(autocomplete="off", autofocus="true") }}
+            <!-- <input type="text" class="form-control" placeholder="Type your message">{{ form.text_input(autocomplete="off", autofocus="true") }}</input> -->
+            <!-- <button class="btn btn-primary">Send</button> -->
+            <input class="btn btn-primary" type="submit" name="submit_button" value="Send">
+            <!-- <input class="btn btn-outline-secondary" type="submit" name="submit_button" value="Clear chat"> -->
           </div>
         </div>
-        {% endif %}
-      </div>
-
-
+      </form>
     </div>
+
+    <!-- Task Box -->
+    {% if prompt['tasks'] %}
+    <div class="col-3 border-left">
+      <div>
+        <div class="text-left my-3">
+          <h5 class="text-dark mb-4">Tasks</h5>
+          <p>Try to complete these tasks:</p>
+        </div>
+        <div class="list-group">
+          {% for task in prompt['tasks'] %}
+          <label class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="">
+            {{ task }}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+
+
   </div>
 </div>
 </section>

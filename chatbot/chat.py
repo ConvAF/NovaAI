@@ -60,7 +60,7 @@ def chat(chat_scenario):
         if request.form['submit_button'] == 'Clear chat':
             # Clear chat history
             clear_chat_history()
-        elif request.form['submit_button'] == 'Send text' and form.validate():
+        elif request.form['submit_button'] == 'Send' and form.validate():
             # Add text to chat history
             chat_history.add_user_message(form.text_input.data)
             # chat_history.append(
@@ -91,9 +91,12 @@ def get_bot_response(chat_history):
     """ Get response from the bot """
 
     if current_app.config['LOAD_GRAMMAR_MODEL']:
-        pass
-        # chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
+        chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
     chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
+    # import sys
+    # print("-----------------\nChat History\n\n", chat_history, file=sys.stdout)
+    # print("-----------------\nChat History\n\n", chat_history.get_as_prompt_with_dialog(), file=sys.stdout)
+    
 
     return chat_history
 
@@ -171,9 +174,6 @@ class ChatHistory():
         """
         messages = self.messages[-limit_messages:]
         # Exclude messages that have a correction
-        dialog = "\n".join([f""  ])
-
-
         dialog = "\n".join(
             [f"{self.format_sender_tag(message.sender)}: {message.text}"
                 for message in messages
@@ -220,5 +220,5 @@ class ChatHistory():
 class ChatForm(Form):
     text_input = StringField('Input',
                             [validators.Length(min=4, max=300)],
-                            render_kw={'class': 'form-control chat_text_input_field'}
+                            render_kw={'class': 'form-control chat-text-input-field'}
                             )

@@ -59,6 +59,9 @@ class LanguageModel():
         if response and ('choices' in response) and len(response['choices']):
 
             reply_raw = response['choices'][0]['text']
+            # import sys
+            # print("-----------------\nReply raw\n\n", reply_raw, file=sys.stdout)
+    
             reply = self.clean_reply_text(reply_raw,
                                           tag_bot = chat_history.tag_bot,
                                           tag_user = chat_history.tag_user

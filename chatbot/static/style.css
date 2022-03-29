@@ -11,12 +11,14 @@ html {
 } */
 
 :root {
-  --blue-rgb: 34, 124, 157;
+  /* --blue-rgb: 34, 124, 157; */
+  /* --blue-rgb: 94, 94, 255; */
+  --blue-rgb: 32, 152, 227;
   --teal-rgb: 23, 195, 178;
   --yellow-rgb: 255, 203, 119;
   --cream-rgb: 254, 249, 239;
   --red-rgb: 254, 109, 115;
-
+  /* --red-rgb: 255, 157, 107; */
   --bg-card-header-opacity: 0.75;
   --bg-card-body-opacity: 0.1;
 }
@@ -84,8 +86,9 @@ chat-online {
 
 .chat-messages {
   display: flex;
-  flex-direction: column;
-  max-height: 800px;
+  flex-direction: column-reverse;
+  max-height: 600px;
+  min-height: 400px;
   overflow-y: scroll;
 }
 
@@ -93,6 +96,7 @@ chat-online {
 .chat-message-right {
   display: flex;
   flex-shrink: 0;
+  max-width: 70%;
 }
 
 .chat-message-left {
@@ -103,6 +107,31 @@ chat-online {
   flex-direction: row-reverse;
   margin-left: auto;
 }
+
+.chat-message-avatar {
+  background-color: var(--bs-gray-100) !important;
+}
+
+.chat-message-text-box-bot {
+  background-color: var(--bs-gray-300) !important;
+  /* top-left | top-right | bottom-right | bottom-left */
+  border-radius: 20px 20px 20px 0;
+}
+
+.chat-message-text-box-user {
+  background-color: rgba(var(--blue-rgb), 1) !important;
+  color: white;
+  /* top-left | top-right | bottom-right | bottom-left */
+  border-radius: 20px 20px 0 20px;
+}
+
+.chat-text-input-field:focus {
+  /* border-color: rgba(126, 239, 104, 0.8); */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(var(--blue-rgb), 0.6);
+  outline: 0 none;
+}
+
 .py-3 {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
