@@ -22,6 +22,7 @@ class LanguageModel():
         openai.api_key = os.getenv("OPENAI_API_KEY")
         self.engine = os.getenv("OPENAI_ENGINE")
         self.temperature = 0.5
+        self.max_tokens = 50
         
 
     def add_response_to_chat_history(self, chat_history: ChatHistory):
@@ -30,7 +31,12 @@ class LanguageModel():
         # if chat_history is None or len(chat_history)==0:
         #     return chat_history
         
-        reply_text = self.get_response_from_GPT3(chat_history)
+        reply_raw_text = self.get_response_from_GPT3(chat_history)
+
+        reply_text = self.clean_reply_text(reply_raw_text,
+                                        tag_bot = chat_history.tag_bot,
+                                        tag_user = chat_history.tag_user
+                                        )
 
         if reply_text:
             chat_history.add_bot_message(reply_text)
@@ -49,34 +55,50 @@ class LanguageModel():
         # prompt_with_dialog = self.create_prompt_with_dialog(chat_history, prompt_text)
         prompt_with_dialog = chat_history.get_as_prompt_with_dialog()
 
+        # Add the stop sequences (such as "Human:" and "Nova:")
+        # stop_sequences = [f'{tag}:' for tag in [chat_history.tag_user, chat_history.tag_bot]]
+        stop_sequences = [f'{tag}:' for tag in [chat_history.tag_user]]
+
         response = openai.Completion.create(
                 engine=self.engine,
                 prompt=prompt_with_dialog,
                 temperature=self.temperature,
+                max_tokens=self.max_tokens,
+                stop=stop_sequences
             )
 
-        reply = None
         if response and ('choices' in response) and len(response['choices']):
-
             reply_raw = response['choices'][0]['text']
-            # import sys
-            # print("-----------------\nReply raw\n\n", reply_raw, file=sys.stdout)
-    
-            reply = self.clean_reply_text(reply_raw,
-                                          tag_bot = chat_history.tag_bot,
-                                          tag_user = chat_history.tag_user
-                                          )
+            return reply_raw
 
-        return reply
+        return ''
+        # reply = None
+        # if response and ('choices' in response) and len(response['choices']):
+
+        #     reply_raw = response['choices'][0]['text']
+        #     import sys
+        #     print("-----------------\nReply raw\n\n", reply_raw, file=sys.stdout)
+    
+        #     reply = self.clean_reply_text(reply_raw,
+        #                                   tag_bot = chat_history.tag_bot,
+        #                                   tag_user = chat_history.tag_user
+        #                                   )
+
+        # return reply
 
     def clean_reply_text(self, reply_raw, tag_bot, tag_user):
         " Clean up the reply reply_raw a bit "
 
         reply = reply_raw.strip()
-        # Get rid of "Bot: " at beginning of message
-        reply = ":".join(reply.split(':')[1:]).strip()
 
-        # Sometimes, a partial reply of a user is included. Remove that
+        # Remove new line characters
+        reply = reply.replace(f"\n", "")
+
+        # Get rid of "Bot: " at beginning of message
+        reply = reply.replace(f"{tag_bot}: ", "")
+        reply = reply.replace(f"{tag_bot}: ".lower(), "")
+
+        # Sometimes, a partial reply of a user is included. Stop answer there
         # Example: "Bot: Hello, how are you? User: "
         if f'{tag_user}:' in reply:
             idx = reply.find(f'{tag_user}:')

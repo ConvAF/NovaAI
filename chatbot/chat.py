@@ -4,6 +4,7 @@ Chat views.
 from flask import Blueprint, render_template, request, session, current_app, abort
 from wtforms import Form, StringField, validators
 import json
+from random import choice
 
 from chatbot.auth import login_required
 
@@ -52,7 +53,8 @@ def chat(chat_scenario):
         chat_history = ChatHistory(
                                     prompt_base = prompt['text'],
                                     tag_bot = prompt['tag_bot'],
-                                    tag_user = prompt['tag_user']
+                                    tag_user = prompt['tag_user'],
+                                    initial_bot_messages_options = prompt.get('initial_bot_messages_options')
                                    )
     # On text form submission
     if request.method == 'POST':
@@ -137,19 +139,19 @@ class ChatHistory():
     def __init__(self,
                     prompt_base,
                     tag_bot,
-                    tag_user
+                    tag_user,
+                    initial_bot_messages_options=None
                     ):
 
         self.prompt_base = prompt_base
         self.tag_bot = tag_bot
         self.tag_user = tag_user
-        # self.chat_scenario = chat_scenario
-        # self.prompt_data = prompt_data
-        # self.prompt_base = prompt_data['text']
-        # self.tag_bot = prompt_data['tag_bot']
-        # self.tag_user = prompt_data['tag_user']
-
         self.messages = []
+
+        if initial_bot_messages_options:
+            initial_message = choice(initial_bot_messages_options)
+            self.add_bot_message(initial_message)
+
 
     def add_user_message(self, text: str):
         message = ChatMessage(sender='user', text=text)
@@ -180,7 +182,7 @@ class ChatHistory():
                 if not message.correction
             ])
 
-        prompt_with_dialog = "\n".join([self.prompt_base, dialog])
+        prompt_with_dialog = "\n".join([self.prompt_base, dialog]).lstrip()
         return prompt_with_dialog
 
 
