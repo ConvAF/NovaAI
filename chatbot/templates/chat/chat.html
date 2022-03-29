@@ -2,11 +2,26 @@
 
 {% block content %}
 <section class="py-5 bg-white">
+
+  <!-- Toast Template with prompt intro -->
+  <!-- <div class="position-relative">
+    <div id="prompt-intro-text" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-authide="false" top-50 start-50 translate-middle>
+      <div class="toast-header">
+        <strong class="me-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+    </div>
+  </div> -->
+
   <div class="container px-5 my-1">
 
   <h1 class="h3 mb-3">{{ prompt['category'].replace("_", " ") | title }} - {{ prompt['label'] }}</h1>
   <div class="row gx-4 justify-content-center">
-    
+        
 
     <!-- Chat Box -->
 
@@ -16,11 +31,14 @@
 
           <!-- Actual chat messages -->
           {% for message in messages|reverse %}
-            <div class="chat-message-{{ 'left' if message['sender']=='bot' else 'right' }} d-flex pb-4">
+            <div class="chat-message-{{ 'left' if message['sender']=='bot' else 'right' }} d-flex pb-0">
               <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"> -->
               <!-- Avatar image -->
-              <div class="chat-message-avatar feature text-dark rounded-circle mb-0 align-self-end mx-1" style="width: 2rem; height: 2rem">
-                <i class="bi bi-{{ 'robot' if message['sender']=='bot' else 'person' }}" style="font-size: 2rem;"></i>
+              <div class="text-center">
+                <div class="chat-message-avatar text-dark rounded-circle mb-0 align-self-end text-center mx-1" style="width: 3rem; height: 3rem">
+                  <i class="bi bi-{{ 'robot' if message['sender']=='bot' else 'person' }}" style="font-size: 2rem; margin: auto;"></i>
+                </div>
+                <small>{{ 'Nova' if message['sender']=='bot' else g.user['name'] }}</small>
               </div>
               <!-- <div class="text-muted small text-nowrap mt-2">2:33 am</div> -->
               <!-- Message box -->
@@ -53,15 +71,22 @@
     {% if prompt['tasks'] %}
     <div class="col-3 border-left">
       <div>
+        {% if prompt['prompt_intro'] %}
+        <div>
+          <h5 class="text-dark mb-2">Intro</h5>
+          <p>{{ prompt['prompt_intro'] }}</p>
+        </div>
+        {% endif %}
+
         <div class="text-left my-3">
-          <h5 class="text-dark mb-4">Tasks</h5>
-          <p>Try to complete these tasks:</p>
+          <h5 class="text-dark mb-2">Tasks</h5>
+          <!-- <p>Try to complete these tasks:</p> -->
         </div>
         <div class="list-group">
           {% for task in prompt['tasks'] %}
-          <label class="list-group-item">
+          <label class="list-group-item text-right">
             <input class="form-check-input me-1" type="checkbox" value="">
-            {{ task }}
+            <small>{{ task }}</small>
           </label>
           {% endfor %}
         </div>

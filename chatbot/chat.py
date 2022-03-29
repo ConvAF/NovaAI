@@ -54,7 +54,6 @@ def chat(chat_scenario):
                                     tag_bot = prompt['tag_bot'],
                                     tag_user = prompt['tag_user']
                                    )
-
     # On text form submission
     if request.method == 'POST':
         if request.form['submit_button'] == 'Clear chat':
@@ -91,7 +90,8 @@ def get_bot_response(chat_history):
     """ Get response from the bot """
 
     if current_app.config['LOAD_GRAMMAR_MODEL']:
-        chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
+        pass
+        # chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
     chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
     # import sys
     # print("-----------------\nChat History\n\n", chat_history, file=sys.stdout)

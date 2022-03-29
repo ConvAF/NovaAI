@@ -35,6 +35,7 @@
         "text": "The following is a conversation between Lola the baker and customer. Lola sells baked goods in her bakery. Lola is helpful, clever, and very friendly.\nCustomer: Good morning!\nLola: Hello, how can I help you?",
         "tag_bot": "Lola",
         "tag_user": "Customer",
+        "prompt_intro": "You are in bakery, talking to Nova who is selling delicious baked goods.",
         "tasks": [
             "Ask what types of bread they have and select one to buy",
             "Buy 6 slices of the bread",
@@ -52,6 +53,7 @@
         "text": "The following is a conversation between a customer and a store clerk called Artemis. The conversation takes place at a store. The customer needs help finding some items in the store as well as the price of those items. Artemis helps him out.\nArtemis: Hi, my name is Artemis. May I help you?",
         "tag_bot": "Artemis",
         "tag_user": "Customer",
+        "prompt_intro": "You are in a store that sells all kinds of goods. You are talking to the shop assistant Nova.",
         "tasks": [
             "Ask the clerk to help you find 2 cleaning related objects.",
             "Ask the clerk to help you find 2 cooking related objects.",
@@ -69,6 +71,7 @@
         "text": "The following is a conversation between a waiter named Artemis and a customer. The interaction takes place in a restaurant at lunch time. Artemis is helpful clever, and very friendly. He wants to make sure the customer has a nice experience at the restaurant. \nArtemis: Hello my name is Artemis, I'll be your waiter today.",
         "tag_bot": "Artemis",
         "tag_user": "Customer",
+        "prompt_intro": "You are sitting in a restaurant and look forward to having lunch.",
         "tasks": [
             "Ask to see the menu",
             "Figure out which specials the restaurant offers today",
