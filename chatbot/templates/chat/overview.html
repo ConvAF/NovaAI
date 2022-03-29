@@ -16,7 +16,7 @@
       </div>
     
       <!-- General Chats Cards -->
-      <div class="row gx-0 px-0 mb-3 justify-content-center">
+      <div class="row gx-4 px-0 mb-3 justify-content-center">
         {% for prompt_key, prompt_data in prompts.items() %}
           {% if prompt_data['category']=='general_chat' %}
             <div class="col-lg-4 mb-5 mb-lg-0">
@@ -45,7 +45,7 @@
       </div>
 
       <!-- Situation Chats Cards -->
-      <div class="row gx-0 px-0 mb-3 justify-content-center">
+      <div class="row gx-4 px-0 mb-3 justify-content-center">
         {% for prompt_key, prompt_data in prompts.items() %}
           {% if prompt_data['category']=='scenario' %}
             <div class="col-lg-4 mb-5 mb-lg-0">
@@ -72,7 +72,7 @@
         </div>
       </div>
       <!-- Persona Chats Cards -->
-      <div class="row gx-0 px-0 mb-3 justify-content-left">
+      <div class="row gx-4 px-0 mb-3 justify-content-left">
         {% for prompt_key, prompt_data in prompts.items() %}
           {% if prompt_data['category']=='persona' %}
             <div class="col-lg-4 mb-5 mb-lg-0">

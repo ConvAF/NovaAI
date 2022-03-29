@@ -64,5 +64,10 @@ def create_app(test_config=None):
     app.prompts = json.loads(open(prompts_path,'r').read())
 
 
+    from chatbot.utils import CustomJSONDecoder, CustomJSONEncoder
+    app.json_encoder = CustomJSONEncoder
+    app.json_decoder = CustomJSONDecoder
+
+
     return app
 

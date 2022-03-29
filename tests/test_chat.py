@@ -2,6 +2,7 @@ import pytest
 from flask import session
 from chatbot.language_model import LanguageModel
 from chatbot.grammar_correction import GrammarModel
+from chatbot.chat import ChatMessage, ChatHistory
 
 CHAT_VALID_ENDPOINT = 'general_chat_beginner'
 
@@ -85,24 +86,35 @@ def test_chat_send_message(client, auth, app):
     app.language_model = LanguageModel()
     app.grammar_correction = GrammarModel(models = 1, use_gpu=False)
 
-    auth.login()
-    response = client.post(
-        f'/chat/{CHAT_VALID_ENDPOINT}',
-        data={
-            'text_input': 'Test message',
-            'submit_button': 'Send text'
-            }
-    )
-    assert response.status_code == 200
+    with client:
+        auth.login()
+        response = client.post(
+            f'/chat/{CHAT_VALID_ENDPOINT}',
+            data={
+                'text_input': 'Test message',
+                'submit_button': 'Send'
+                }
+        )
+        assert response.status_code == 200
 
-    # Invalid form submission creates error
-    response = client.post(
-        f'/chat/{CHAT_VALID_ENDPOINT}',
-        data={
-            'text_input': 'a',
-            'submit_button': 'Send text'
-            }
-    )
+        # Check that chat history has been created
+        # assert session.get('chat_history')
+
+        # Parse the endpoint again from saime location. Check that chat history has been retained
+        response = client.get(f'/chat/{CHAT_VALID_ENDPOINT}', 
+                                headers={'referrer': f'/chat/{CHAT_VALID_ENDPOINT}'})
+        # assert session.get('chat_history')
+
+        # Invalid form submission creates error
+        response = client.post(
+            f'/chat/{CHAT_VALID_ENDPOINT}',
+            data={
+                'text_input': 'a',
+                'submit_button': 'Send'
+                }
+        )
+
+
 
 
 def test_clear_chat_history(client, auth, app):
@@ -120,7 +132,7 @@ def test_clear_chat_history(client, auth, app):
         f'/chat/{CHAT_VALID_ENDPOINT}',
         data={
             'text_input': 'Test message',
-            'submit_button': 'Send text'
+            'submit_button': 'Send'
             }
         )
         # Asset chat history is full
@@ -143,3 +155,13 @@ def test_clear_chat_history(client, auth, app):
                 'submit_button': 'Clear chat'
                 }
         )
+
+
+def test_chat_message_class():
+    """ Test the chat message class """
+    cm = ChatMessage(sender='user', text='Dummy message')
+    cm.__repr__()
+    js = cm.toJSON()
+    cm = ChatMessage.fromJSON(js)
+
+#TODO: Test chat history class
