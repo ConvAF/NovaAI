@@ -9,7 +9,7 @@ class GrammarModel(Gramformer):
     """
     def __init__(self, models=1, use_gpu=False, seed=1212):
         self.gm = super().__init__(models=1, use_gpu=False)
-
+        self.ignore_errors = ['OTHER', 'ORTH']
 
     def grammar_correction(self,last_user_input):
         """
@@ -39,8 +39,9 @@ class GrammarModel(Gramformer):
         last_user_input = chat_history[-1].get('text')
         corrected_sentence, correction_message = self.grammar_correction(last_user_input)
         error_types = self.get_edits(last_user_input, corrected_sentence)
+        overlap_ignore_errors = any(item in error_types for item in self.ignore_errors)
 
-        if correction_message:
+        if correction_message and (overlap_ignore_errors is False):
             chat_history.append(
                 {
                     'sender': 'bot',
