@@ -8,7 +8,7 @@ def test_dashboard_view(client, auth):
     # Not logged in request redirects to login
     response = client.get('/dashboard/')
     assert response.status_code == 302
-    assert 'http://localhost/auth/login' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/auth/login'
 
     # If logged in, view is returned
     with client: # Inside app context
@@ -24,7 +24,7 @@ def test_dashboard_statitstics_view(client, auth):
     # Not logged in request redirects to login
     response = client.get('/dashboard/statistics')
     assert response.status_code == 302
-    assert 'http://localhost/auth/login' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/auth/login'
 
     # If logged in, view is returned
     with client: # Inside app context

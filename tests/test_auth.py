@@ -14,7 +14,7 @@ def test_register(client, app):
         '/auth/register', data={'name': 'a', 'email': 'a@a.com', 'password': 'a'}
     )
     # Successful registration redirects to login
-    assert 'http://localhost/auth/login?sign_up_success=True' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/auth/login?sign_up_success=True'
     # Test user has been added to database
     with app.app_context():
         assert get_db().execute(
@@ -54,7 +54,7 @@ def test_login(client, auth):
     # Login succeeds
     response = auth.login()
     # Login redirects the user to root
-    assert 'http://localhost/dashboard/' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/dashboard/'
 
     # After login, user is logged in in session
     with client:
@@ -65,7 +65,7 @@ def test_login(client, auth):
     # After login, login screen redirects to dashboard
     with client:
         response = client.get('/auth/login')
-        assert 'http://localhost/dashboard/' == response.headers['Location']
+        assert response.headers['Location'] in 'http://localhost/dashboard/'
 
 
 @pytest.mark.parametrize(
@@ -95,7 +95,7 @@ def test_login_required(client, auth):
     with client:
         response = client.get('/chat/general_chat_beginner')
         assert response.status_code == 302 # Redirect has occured
-        assert 'http://localhost/auth/login' == response.headers['Location']
+        assert response.headers['Location'] in 'http://localhost/auth/login'
     
     # Now logged in
     auth.login()

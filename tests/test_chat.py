@@ -12,7 +12,7 @@ def test_chat_overview(client, auth, app):
     # Not logged in request redirects to login
     response = client.get('/chat/')
     assert response.status_code == 302
-    assert 'http://localhost/auth/login' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/auth/login'
     
 
     with client: # Inside app context
@@ -34,7 +34,7 @@ def test_chat(client, auth, app):
     # Not logged in request redirects to login
     response = client.get('/chat/test')
     assert response.status_code == 302
-    assert 'http://localhost/auth/login' == response.headers['Location']
+    assert response.headers['Location'] in 'http://localhost/auth/login'
     
     with client: # Inside app context
         # Logged in returns template
