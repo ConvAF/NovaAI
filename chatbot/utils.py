@@ -93,6 +93,11 @@ class CustomJSONDecoder(JSONDecoder):
             obj_json['chat_history'] = ChatHistory.fromJSON(chat_history_json)
         return obj_json
 
+def get_empty_chat_history():
+    """ Returns a minimal chat history """
+    ch = ChatHistory(prompt_base = "The following is a conversation between a Bot and a User.", tag_bot = "Bot", tag_user = "User")
+    return ch
+
 def get_simple_chat_history():
     """ Returns a minimal chat history """
     ch = ChatHistory(prompt_base = "The following is a conversation between a Bot and a User.", tag_bot = "Bot", tag_user = "User")

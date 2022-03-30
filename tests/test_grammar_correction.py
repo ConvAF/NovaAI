@@ -1,7 +1,9 @@
 import pytest
+import copy
 from flask import session
 from chatbot.db import get_db
 from chatbot.grammar_correction import GrammarModel
+from chatbot.utils import get_empty_chat_history
 
   
 def test_grammar_correction_model_response(app):
@@ -23,18 +25,23 @@ def test_grammar_correction_model_response(app):
 
     # A valid response is created for each history
     # 1. The sentence is correct (no correction).
-    chat_history_correct = [{'sender': 'User', 'text': 'Thank you.'}]
-    chat_history_correct_old = chat_history_correct.copy()
+    # chat_history_correct = [{'sender': 'User', 'text': 'Thank you.'}]
+    chat_history_correct = get_empty_chat_history()
+    chat_history_correct.add_user_message("Thank you.")
+    chat_history_correct_old = copy.copy(chat_history_correct)
     chat_history_response_correct = app.grammar_correction.add_correction_to_chat_history(chat_history_correct)
     # The chat history has not increased (no correction)
-    assert len(chat_history_response_correct) == len(chat_history_correct_old)
+    assert len(chat_history_response_correct.messages) == len(chat_history_correct_old.messages)
 
     # 2. The sentence is incorrect (correction).
-    chat_history_incorrect = [{'sender': 'User', 'text': 'After he go to school, he walk home'}]
-    chat_history_incorrect_old = chat_history_incorrect.copy()
+    # chat_history_incorrect = [{'sender': 'User', 'text': 'After he go to school, he walk home'}]
+    chat_history_incorrect = get_empty_chat_history()
+    chat_history_incorrect.add_user_message('After he go to school, he walk home')
+    # chat_history_incorrect_old = chat_history_incorrect.copy()
+    chat_history_incorrect_old = copy.copy(chat_history_incorrect)
     chat_history_response_incorrect = app.grammar_correction.add_correction_to_chat_history(chat_history_incorrect)
     # The chat history has increased by 1 (correction)
-    assert len(chat_history_response_incorrect) == len(chat_history_incorrect_old) + 1
+    assert len(chat_history_response_incorrect.messages) == len(chat_history_incorrect_old.messages) + 1
 
     # In case of error, an error type is returned.s
 

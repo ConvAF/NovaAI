@@ -202,6 +202,16 @@ class ChatHistory():
     def __repr__(self):
         return self.toJSON()
 
+    def __copy__(self):
+        chnew = ChatHistory(
+                prompt_base=self.prompt_base,
+                tag_bot=self.tag_bot,
+                tag_user=self.tag_user,
+                # initial_bot_messages_options=self.initial_bot_messages_options
+        )
+        chnew.messages = self.messages
+        return chnew
+
     @staticmethod
     def fromJSON(obj_json):
         obj_dict = json.loads(obj_json)
