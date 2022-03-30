@@ -15,20 +15,44 @@ html {
   /* --blue-rgb: 94, 94, 255; */
   /* --blue-rgb: 32, 152, 227; */
   /* --blue-rgb: 64, 209, 171; */
+  --bs-gray: #6c757d;
+  --bs-gray-dark: #343a40;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+
   --blue-rgb: 57, 184, 150;
   --teal-rgb: 23, 195, 178;
   --yellow-rgb: 255, 203, 119;
   --cream-rgb: 254, 249, 239;
   --red-rgb: 254, 109, 115;
 
+  --yellow-sunglow: 255, 203, 60;
+  --green-mountain-meadow: 57, 184, 150;
+  --red-light-coral: 254, 109, 115;
+  --tiffany-blue: 23, 195, 178;
+
   /* --primary-rgb: 255, 166, 72; */
   /* --primary-rgb: 253, 159, 51; */
-  --primary-rgb: 255, 203, 60;
+  --primary-rgb: var(--yellow-sunglow);
+
+  --general-chat-rgb: var(--yellow-sunglow);
+  --scenario-rgb: var(--red-light-coral);
+  --persona-rgb: var(--tiffany-blue);
+
   /* --red-rgb: 255, 157, 107; */
   --bg-card-header-opacity: 0.75;
+  /* --bg-card-body-opacity: 0.7; */
   --bg-card-body-opacity: 0.1;
 }
 
+/* Overwrite button primary */
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:active,
@@ -40,44 +64,57 @@ html {
   border-color: rgb(var(--primary-rgb)) !important;
 }
 
+.feature-icon {
+  background-color: rgba(var(--red-light-coral), 1) !important;
+}
+
+/* Chat preview cards */
+.chat-preview-card {
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
 .bg-general-chat-header {
+  /* color: var(--bs-gray-800); */
+  /* background-color: white; */
   background-color: rgba(
-    /* var(--blue-rgb), */ var(--primary-rgb),
+    var(--general-chat-rgb),
     var(--bg-card-header-opacity)
   ) !important;
 }
 
 .bg-general-chat-body {
   background-color: rgba(
-    var(--primary-rgb),
+    var(--general-chat-rgb),
     var(--bg-card-body-opacity)
   ) !important;
 }
 
 .bg-scenario-header {
   background-color: rgba(
-    var(--red-rgb),
+    var(--scenario-rgb),
     var(--bg-card-header-opacity)
   ) !important;
 }
 
 .bg-scenario-body {
   background-color: rgba(
-    var(--red-rgb),
+    var(--scenario-rgb),
     var(--bg-card-body-opacity)
   ) !important;
 }
 
 .bg-persona-header {
   background-color: rgba(
-    var(--yellow-rgb),
+    var(--persona-rgb),
     var(--bg-card-header-opacity)
   ) !important;
 }
 
 .bg-persona-body {
   background-color: rgba(
-    var(--yellow-rgb),
+    var(--persona-rgb),
     var(--bg-card-body-opacity)
   ) !important;
 }
