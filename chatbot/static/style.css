@@ -1,5 +1,5 @@
 html {
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
   background: #fff;
   /* padding: 1rem; */
 }
@@ -33,7 +33,7 @@ html {
   --cream-rgb: 254, 249, 239;
   --red-rgb: 254, 109, 115;
 
-  --yellow-sunglow: 255, 203, 60;
+  --yellow-sunglow: 255, 203, 60; /* #FFCB33 */
   --green-mountain-meadow: 57, 184, 150;
   --red-light-coral: 254, 109, 115;
   --tiffany-blue: 23, 195, 178;
@@ -53,6 +53,12 @@ html {
 }
 
 /* Overwrite button primary */
+.btn {
+  border-radius: 50rem !important;
+
+  box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:active,
@@ -62,6 +68,8 @@ html {
   background-color: rgb(var(--primary-rgb)) !important;
   /* box-shadow: 0 0 0 0.25rem rgb(var(--primary-rgb)) !important; */
   border-color: rgb(var(--primary-rgb)) !important;
+  /* Pill */
+  border-radius: 50rem !important;
 }
 
 .feature-icon {
@@ -71,7 +79,7 @@ html {
 /* Chat preview cards */
 .chat-preview-card {
   border-radius: 20px 20px 20px 20px;
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
