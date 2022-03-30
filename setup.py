@@ -38,7 +38,7 @@ def post_install_commands():
 
 
 setup(name='chatbot',
-      version = '0.0.2',
+      version = '0.1.0',
       license='MIT',
       author='Aloïs Villa, Frank Schlosser',
       description='A language learning chatbot',

@@ -92,13 +92,10 @@ def get_bot_response(chat_history):
     """ Get response from the bot """
 
     if current_app.config['LOAD_GRAMMAR_MODEL']:
-        pass
-        # chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
+        # pass
+        chat_history = current_app.grammar_correction.add_correction_to_chat_history(chat_history)
     chat_history = current_app.language_model.add_response_to_chat_history(chat_history)
-    # import sys
-    # print("-----------------\nChat History\n\n", chat_history, file=sys.stdout)
-    # print("-----------------\nChat History\n\n", chat_history.get_as_prompt_with_dialog(), file=sys.stdout)
-    
+
 
     return chat_history
 
@@ -157,12 +154,15 @@ class ChatHistory():
         message = ChatMessage(sender='user', text=text)
         self.add_message(message)
     
-    def add_bot_message(self, text: str):
-        message = ChatMessage(sender='bot', text=text)
+    def add_bot_message(self, text: str, correction: bool=False):
+        message = ChatMessage(sender='bot', text=text, correction=correction)
         self.add_message(message)
 
     def add_message(self, chat_message: ChatMessage):
         self.messages.append(chat_message)
+
+    def get_last_message_text(self) -> ChatMessage:
+        return self.messages[-1].text
 
     def get_as_prompt_with_dialog(self, limit_messages: int=10):
         """ Returns the chat history in a Dialog format
