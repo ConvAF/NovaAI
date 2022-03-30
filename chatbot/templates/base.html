@@ -27,14 +27,19 @@
           <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') if g.user else url_for('index') }}">Nova AI</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <ul class="navbar-nav d-lg-flex align-items-center text-center ms-auto mb-2 mb-lg-0">
                   <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li> -->
                   {% if g.user %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item h-100"><a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('chat.overview') }}">Chat</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.statistics') }}">Statistics</a></li>
 
-                    <li class="nav-item"><p class="nav-link">Logged in as: {{ g.user['name'] }}</p></li>
+                    <!-- <li class="nav-item"><span class="nav-link">{{ g.user['name'] }}</span></li> -->
+                    <li class="nav-item h-100">
+                        <div class="d-flex text-dark chat-message-avatar rounded-circle align-middle mb-0 text-center mx-1" style="width: 2rem; height: 2rem">
+                          <i class="bi bi-person align-middle" style="font-size: 1rem; margin: auto;"></i>
+                        </div>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
                   {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Sign In</a></li>
