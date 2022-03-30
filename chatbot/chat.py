@@ -3,7 +3,7 @@ Chat views.
 """
 from flask import Blueprint, render_template, request, session, current_app, abort
 from wtforms import Form, StringField, validators
-import json
+import json, copy
 from random import choice
 
 from chatbot.auth import login_required
@@ -121,6 +121,13 @@ class ChatMessage():
     def __repr__(self):
         return f"{self.sender}: {self.text}"
     
+    def __copy__(self):
+        return ChatMessage(
+            sender=self.sender,
+            text=self.text,
+            correction=self.correction
+        )
+
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
@@ -209,7 +216,7 @@ class ChatHistory():
                 tag_user=self.tag_user,
                 # initial_bot_messages_options=self.initial_bot_messages_options
         )
-        chnew.messages = self.messages
+        chnew.messages = copy.copy(self.messages)
         return chnew
 
     @staticmethod

@@ -28,7 +28,7 @@ def test_grammar_correction_model_response(app):
     # chat_history_correct = [{'sender': 'User', 'text': 'Thank you.'}]
     chat_history_correct = get_empty_chat_history()
     chat_history_correct.add_user_message("Thank you.")
-    chat_history_correct_old = copy.copy(chat_history_correct)
+    chat_history_correct_old = copy.deepcopy(chat_history_correct)
     chat_history_response_correct = app.grammar_correction.add_correction_to_chat_history(chat_history_correct)
     # The chat history has not increased (no correction)
     assert len(chat_history_response_correct.messages) == len(chat_history_correct_old.messages)
@@ -38,7 +38,7 @@ def test_grammar_correction_model_response(app):
     chat_history_incorrect = get_empty_chat_history()
     chat_history_incorrect.add_user_message('After he go to school, he walk home')
     # chat_history_incorrect_old = chat_history_incorrect.copy()
-    chat_history_incorrect_old = copy.copy(chat_history_incorrect)
+    chat_history_incorrect_old = copy.deepcopy(chat_history_incorrect)
     chat_history_response_incorrect = app.grammar_correction.add_correction_to_chat_history(chat_history_incorrect)
     # The chat history has increased by 1 (correction)
     assert len(chat_history_response_incorrect.messages) == len(chat_history_incorrect_old.messages) + 1
