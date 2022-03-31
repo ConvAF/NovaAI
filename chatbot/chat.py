@@ -31,25 +31,18 @@ def chat(chat_scenario):
     promptExists = chat_scenario in current_app.prompts.keys()
     if not promptExists:
         abort(404)
-        # return render_template('404.html'), 404
 
     # If the users opens the chat from somewhere else, clear chat history
     userOpensChatFirstTime = request.url != request.referrer
     if userOpensChatFirstTime:
         clear_chat_history()
 
-    # request.referrer.split('/')[-1]
-
     prompt = current_app.prompts[chat_scenario]
-    # prompt_text = prompt['text']
-    # if chat_scenario 
-    # prompt = current_app.prompts
 
     # Get chat history
     chat_history = session.get('chat_history')
     # Create if not exists
     if not chat_history:
-        # chat_history = []
         chat_history = ChatHistory(
                                     prompt_base = prompt['text'],
                                     tag_bot = prompt['tag_bot'],
@@ -64,13 +57,6 @@ def chat(chat_scenario):
         elif request.form['submit_button'] == 'Send' and form.validate():
             # Add text to chat history
             chat_history.add_user_message(form.text_input.data)
-            # chat_history.append(
-            #     {
-            #         'sender': 'user',
-            #         'text': form.text_input.data
-            #     }
-            # )
-
             # Clear form
             form.text_input.data = ""
             # Get response from bot
@@ -188,6 +174,8 @@ class ChatHistory():
                 for message in messages
                 if not message.correction
             ])
+        # Add a final prompt for the (ie. "Bot:")
+        dialog.append(f"\nf{self.tag_bot}:")
 
         prompt_with_dialog = "\n".join([self.prompt_base, dialog]).lstrip()
         return prompt_with_dialog
