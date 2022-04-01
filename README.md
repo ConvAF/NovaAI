@@ -1,4 +1,4 @@
-# Chatbot
+# Nova AI
 
 ![CI](https://github.com/franksh/chatbot/actions/workflows/build.pipeline.yml/badge.svg)
 ![Coverage badge](tests/coverage-badge.svg)
@@ -6,9 +6,9 @@
 
 ## Overview
 
-Chatbot is an application that uses conversational AI for language learning to help users gain fluency in their target language (work in progress).
+Nova is an application that uses conversational AI for language learning to help users gain fluency in their target language (work in progress).
 
-Users can chat with a conversational AI, practice specific scenarios, and track their learning progress.
+Users can chat with Nova, practice specific scenarios, and track their learning progress.
 
 Features:
 
