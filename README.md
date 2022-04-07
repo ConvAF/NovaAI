@@ -4,6 +4,15 @@
 ![Coverage badge](tests/coverage-badge.svg)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
+<a href="https://www.loom.com/share/50b3de2c86054ed5a6115247818ab293">
+    <p>Nova AI Demo</p>
+    <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/50b3de2c86054ed5a6115247818ab293-with-play.gif">
+  </a>
+
+Try out Nova at:
+
+http://nova-ai.net/
+
 ## Overview
 
 Nova is an application that uses conversational AI for language learning to help users gain fluency in their target language (work in progress).
@@ -14,7 +23,7 @@ Features:
 
 - A language learning website implemented Flask
 - Chats with a conversational AI powered by GPT-3
-- Grammar correction and other learning feaatures
+- Grammar correction and other learning features
 
 ## Usage
 
@@ -25,7 +34,7 @@ The package uses `python3.9`.
 First clone the repo:
 
 ```bash
-git clone git@github.com:franksh/chatbot.git
+git clone git@github.com:ConvAF/NovaAI.git
 cd chatbot
 ```
 
@@ -84,6 +93,35 @@ it from anywhere using
 export FLASK_APP=chatbot
 flask run
 ```
+
+## Deployment
+
+### Deploying on AWS EC2
+
+This describes how to deploy the app on an AWS EC2 instance using docker.
+
+First clone the repo:
+
+```bash
+git clone git@github.com:ConvAF/NovaAI.git
+cd chatbot
+```
+
+Then build the image using
+
+```bash
+docker build . --tag chatbot
+```
+
+To run the app (and keep running in background), start the container as
+
+```bash
+docker run -d chatbot:latest
+```
+
+Be sure that the correct port (80 by default) is exposed on your instance such that the application is accessible from the outside (see notes below).
+
+# Developer Notes
 
 ### Useful commands
 
@@ -166,32 +204,7 @@ py-spy record -o profile.svg --pid <pid>
 
 You can interact with the app for a while (or run a `locust` load test), after a while stop the `py-spy` process, which will save a flame graph of the apps activity.
 
-## Deployment
-
-### Deploying on AWS EC2
-
-This describes how to deploy the app using docker.
-
-First clone the repo:
-
-```bash
-git clone git@github.com:franksh/chatbot.git
-cd chatbot
-```
-
-Then build the image using
-
-```bash
-docker build . --tag chatbot
-```
-
-To run the app (and keep running in background), start the container as
-
-```bash
-docker run -dp 80:80 chatbot:latest
-```
-
-### Manual deployment on AWS EC2
+### Notes on manual deployment on AWS EC 2
 
 The following outlines some steps if not using `docker` as described above
 
@@ -221,14 +234,6 @@ waitress serves the app on port 8080. To redirect to port 80, use
 
 ```bash
 sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
-```
-
-#### Other
-
-Install `git lfs`
-
-```bash
-sudo apt install git-lfs
 ```
 
 ### Docker
