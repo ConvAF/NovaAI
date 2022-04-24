@@ -1,6 +1,6 @@
 # Nova AI
 
-![CI](https://github.com/franksh/chatbot/actions/workflows/build.pipeline.yml/badge.svg)
+![CI](https://github.com/ConvAF/NovaAI/actions/workflows/build.pipeline.yml/badge.svg)
 ![Coverage badge](tests/coverage-badge.svg)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
