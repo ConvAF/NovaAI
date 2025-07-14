@@ -5,13 +5,13 @@
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 <a href="https://www.loom.com/share/50b3de2c86054ed5a6115247818ab293">
-    <p>Nova AI Demo</p>
+    <p>See a Loom Demo of NovaAI here</p>
     <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/50b3de2c86054ed5a6115247818ab293-with-play.gif">
   </a>
 
 Try out Nova at:
 
-http://nova-ai.net/
+http://nova-ai.net/ (Udpate: no longer active)
 
 ## Overview
 
